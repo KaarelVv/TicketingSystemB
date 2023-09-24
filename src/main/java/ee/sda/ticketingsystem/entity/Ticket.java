@@ -17,6 +17,6 @@ public class Ticket {
     @Id
 
     private String userName;
-    private
+
 
 }
