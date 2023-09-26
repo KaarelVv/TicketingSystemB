@@ -14,7 +14,7 @@ public class UserController {
 
     UserRepository userRepository;
 
-    @PostMapping("/")
+    @PostMapping("")
     public User createUser(@RequestBody User user){
 
         return userRepository.save(user);
