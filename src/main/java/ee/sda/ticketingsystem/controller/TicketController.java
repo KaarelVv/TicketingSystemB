@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TicketController {
 
-    @Autowired
+    public TicketController(TicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
+    }
+
     TicketRepository ticketRepository;
 
 
