@@ -1,14 +1,36 @@
 package ee.sda.ticketingsystem.controller;
 
+import ee.sda.ticketingsystem.entity.Ticket;
 import ee.sda.ticketingsystem.repository.TicketRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.List;
 
 @RestController
+@AllArgsConstructor // if you not used the autowired
+@RequestMapping("/ticket")
 public class TicketController {
 
-    @Autowired
     TicketRepository ticketRepository;
 
+    @GetMapping
+    public Ticket getTicket(@PathVariable Integer id) {
+        return ticketRepository.findById(id).get();
+    }
+    @GetMapping
+    public List<Ticket> getTickets() {
+        return ticketRepository.findAll();
+    }
+    @PostMapping
+    public Ticket addTicket(@RequestBody Ticket ticket) {
+        return ticketRepository.save(ticket);
+    }
+    @PutMapping
+    public Ticket editTicket(@RequestBody Ticket ticket){
+        return null;
+    }
 
 }
