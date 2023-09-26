@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
+@Table(name = "profile")
 public class User {
 
     @Id

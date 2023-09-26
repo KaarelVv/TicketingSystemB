@@ -15,12 +15,12 @@ public class TicketController {
 
     TicketRepository ticketRepository;
 
-    @GetMapping
+    @GetMapping("/{id}")
     public Ticket getTicket(@PathVariable Integer id){
         return ticketRepository.findById(id).get();
     }
     @GetMapping
-    public List<Ticket> getTickets() {
+    public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();
     }
     @PostMapping
