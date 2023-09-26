@@ -23,10 +23,10 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String userName;
     private String title;
     private String status;
     private Date creationDate;
     private String priority;
+    private String category;
 
 }
