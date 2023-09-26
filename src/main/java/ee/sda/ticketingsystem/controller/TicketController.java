@@ -14,13 +14,13 @@ import java.util.List;
 public class TicketController {
 
     TicketRepository ticketRepository;
-
+    // localhost:8080/ticket/12
     @GetMapping("/{id}")
-    public Ticket getTicket(@PathVariable Integer id){
+    public Ticket getTicket(@PathVariable Integer id) {
         return ticketRepository.findById(id).get();
     }
     @GetMapping
-    public List<Ticket> getAllTickets() {
+    public List<Ticket> getTickets() {
         return ticketRepository.findAll();
     }
     @PostMapping
