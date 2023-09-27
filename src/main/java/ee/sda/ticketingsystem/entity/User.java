@@ -1,7 +1,7 @@
 package ee.sda.ticketingsystem.entity;
 
 
-import ee.sda.ticketingsystem.model.UserType;
+import ee.sda.ticketingsystem.component.UserType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

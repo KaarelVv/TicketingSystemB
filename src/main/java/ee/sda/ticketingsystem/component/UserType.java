@@ -1,4 +1,4 @@
-package ee.sda.ticketingsystem.model;
+package ee.sda.ticketingsystem.component;
 
 public enum UserType {
     AGENT,

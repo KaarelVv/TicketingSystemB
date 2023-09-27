@@ -1,6 +1,6 @@
 package ee.sda.ticketingsystem.entity;
 
-import ee.sda.ticketingsystem.model.Status;
+import ee.sda.ticketingsystem.component.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
