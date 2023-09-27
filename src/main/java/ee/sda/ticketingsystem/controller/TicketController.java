@@ -24,7 +24,7 @@ public class TicketController {
         return ticketRepository.findAll();
     }
     @PostMapping
-    public Ticket addTicket(@RequestBody Ticket ticket) {
+    public Ticket createTicket(@RequestBody Ticket ticket) {
         return ticketRepository.save(ticket);
     }
     @PutMapping

@@ -1,8 +1,6 @@
 package ee.sda.ticketingsystem.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,12 +12,16 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Attachment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ticketId;
+    private Integer attachmentId;
+
     private String fileName;
-    private Integer fieSize;
+    private Integer fileSize;
     private Date uploadDate;
+    @ManyToOne
+    private Ticket ticket;
 }
