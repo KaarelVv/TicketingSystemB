@@ -1,6 +1,7 @@
 package ee.sda.ticketingsystem.service;
 
 import ee.sda.ticketingsystem.entity.Ticket;
+import ee.sda.ticketingsystem.exception.TicketNotFoundException;
 import ee.sda.ticketingsystem.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,11 +32,12 @@ public class TicketService {
     // Doesn´t work without Optional
     public Ticket editTicket(Integer id, Ticket updateTicket) {
         Optional<Ticket> existingTicketOptional = ticketRepository.findById(id);
-        if(existingTicketOptional.isPresent()) {
+        if (existingTicketOptional.isPresent()) {
             Ticket existingTicket = existingTicketOptional.get();
-    }
+            return ticketRepository.save(existingTicket);
+        } else {
+            throw new TicketNotFoundException("Ticket not found with id: " + id);
+        }
 
-        return ticketRepository.save(updateTicket);
     }
-
 }
