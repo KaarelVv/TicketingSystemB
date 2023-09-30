@@ -6,12 +6,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class TicketingSystemHandler {
+public class UserNotFoundHandler {
 
-    @ExceptionHandler(TicketNotFoundException.class)
-    public ResponseEntity<String> handleTicketNotFoundException(TicketNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
-
-
 }
