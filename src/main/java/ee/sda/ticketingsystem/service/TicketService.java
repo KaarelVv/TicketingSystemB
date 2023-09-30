@@ -31,10 +31,12 @@ public class TicketService {
     }
 
     // Doesn´t work without Optional
-    public Ticket editTicket(Integer id, Ticket updateTicket) {
+    public Ticket editTicket(Integer id, Ticket updatedTicket) {
         Optional<Ticket> existingTicketOptional = ticketRepository.findById(id);
         if (existingTicketOptional.isPresent()) {
             Ticket existingTicket = existingTicketOptional.get();
+            existingTicket.setTitle(updatedTicket.getTitle());
+
             return ticketRepository.save(existingTicket);
         } else {
             throw new TicketNotFoundException("Ticket not found with id: " + id);
