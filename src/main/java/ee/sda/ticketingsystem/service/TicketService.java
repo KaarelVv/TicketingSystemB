@@ -12,6 +12,7 @@ import java.util.Optional;
 @Service
 public class TicketService {
 
+
     @Autowired
     TicketRepository ticketRepository;
 
@@ -23,10 +24,10 @@ public class TicketService {
         return ticketRepository.findAll();
     }
 
-
     // Kuigi pakkus algselt teha Optional<Ticket> .orElseThrow() asemel
     public Ticket getTicketById(Integer id) {
-        return ticketRepository.findById(id).orElseThrow();
+        return ticketRepository.findById(id)
+                .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id:" + id));
     }
 
     // Doesn´t work without Optional
@@ -38,6 +39,7 @@ public class TicketService {
         } else {
             throw new TicketNotFoundException("Ticket not found with id: " + id);
         }
+
 
     }
 }
