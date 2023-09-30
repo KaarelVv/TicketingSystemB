@@ -18,6 +18,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
+
     @ManyToOne
     private Ticket ticket;
     private String content;
