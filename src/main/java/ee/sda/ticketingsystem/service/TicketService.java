@@ -6,6 +6,7 @@ import ee.sda.ticketingsystem.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,11 @@ public class TicketService {
     TicketRepository ticketRepository;
 
     public Ticket createTicket(Ticket ticket) {
+
+        // create new time creationDate
+        LocalDateTime date = LocalDateTime.now();
+        ticket.setCreationDate(date);
+
         return ticketRepository.save(ticket);
     }
 
@@ -37,6 +43,9 @@ public class TicketService {
 
             Ticket existingTicket = existingTicketOptional.get();
             existingTicket.setTitle(updatedTicket.getTitle());
+            existingTicket.setStatus(updatedTicket.getStatus());
+            existingTicket.setCategory(updatedTicket.getCategory());
+            existingTicket.setCreationDate(updatedTicket.getCreationDate());
 
             return ticketRepository.save(existingTicket);
         } else {
