@@ -4,6 +4,7 @@ import ee.sda.ticketingsystem.entity.User;
 
 import ee.sda.ticketingsystem.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,19 +18,21 @@ public class UserController {
     UserService userService;
 
     @GetMapping
-    public List<User> listAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> listAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Integer id) {
         User user = userService.getUserById(id);
-        return ResponseEntity.ok().body(user);
+        return ResponseEntity.ok(user);
     }
 
-    @PostMapping()
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User createdUser = userService.createUser(user);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
 
