@@ -34,6 +34,7 @@ public class TicketService {
     public Ticket editTicket(Integer id, Ticket updatedTicket) {
         Optional<Ticket> existingTicketOptional = ticketRepository.findById(id);
         if (existingTicketOptional.isPresent()) {
+
             Ticket existingTicket = existingTicketOptional.get();
             existingTicket.setTitle(updatedTicket.getTitle());
 
