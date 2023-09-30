@@ -33,7 +33,7 @@ public class TicketController {
         return ticketService.createTicket(ticket);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Ticket> editTicket(@PathVariable Integer id, Ticket updatedTicket) {
+    public ResponseEntity<Ticket> editTicket(@PathVariable Integer id, @RequestBody Ticket updatedTicket) {
         try {
             Ticket editedTicket = ticketService.editTicket(id, updatedTicket);
             return ResponseEntity.ok(editedTicket);
