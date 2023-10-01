@@ -41,7 +41,6 @@ public class TicketController {
             return ResponseEntity.ok(editedTicket);
         } catch (TicketNotFoundException e) {
             return ResponseEntity.notFound().build();
-
         }
 
     }
