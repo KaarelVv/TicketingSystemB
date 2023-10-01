@@ -34,20 +34,7 @@ public class UserService {
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
-
-    public User user(UserDTO userDTO) {
-        if(userRepository.existsByEmail(userDTO.getEmail())){
-            throw new RuntimeException("Username already exists");
-        }
-        User user = new User()
-                .setName(userDTO.getName())
-                .setUserId(userDTO.getUserId())
-                .setEmail(userDTO.getEmail())
-                .setPassword(userDTO.getPassword())
-                .setUserType(userDTO.getUserType());
-
-        return  userRepository.save(user);
-    }
+    
     }
 
 
