@@ -3,6 +3,6 @@ package ee.sda.ticketingsystem.component;
 public enum Status {
 
     OPEN,
-    CLOSE,
+    CLOSED,
     IN_PROGRESS
 }
