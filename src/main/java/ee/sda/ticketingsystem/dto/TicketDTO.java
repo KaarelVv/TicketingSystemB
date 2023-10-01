@@ -1,12 +1,14 @@
 package ee.sda.ticketingsystem.dto;
 
-import ee.sda.ticketingsystem.component.Status;
+import ee.sda.ticketingsystem.enums.Status;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 import java.util.List;
 
 @Data
+@Accessors
 public class TicketDTO {
 
     private Integer ticketId;
