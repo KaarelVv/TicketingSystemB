@@ -1,6 +1,6 @@
 package ee.sda.ticketingsystem.controller;
 
-import ee.sda.ticketingsystem.entity.User;
+import ee.sda.ticketingsystem.dto.UserDTO;
 
 import ee.sda.ticketingsystem.service.UserService;
 import lombok.AllArgsConstructor;
@@ -18,14 +18,14 @@ public class UserController {
     UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> listAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserDTO>> listAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Integer id) {
-        User userDTO = userService.getUserById(id);
+    public ResponseEntity<UserDTO> getUser(@PathVariable Integer id) {
+        UserDTO userDTO = userService.getUserById(id);
         if (userDTO == null) {
             return ResponseEntity.notFound().build();
         }
@@ -33,8 +33,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+        UserDTO createdUser = userService.createUser(userDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
