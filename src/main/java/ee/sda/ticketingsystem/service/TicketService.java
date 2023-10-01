@@ -4,7 +4,7 @@ import ee.sda.ticketingsystem.enums.Status;
 import ee.sda.ticketingsystem.dto.TicketDTO;
 import ee.sda.ticketingsystem.entity.Ticket;
 import ee.sda.ticketingsystem.exception.TicketNotFoundException;
-import ee.sda.ticketingsystem.hydrator.TicketiHydrator;
+import ee.sda.ticketingsystem.hydrator.TicketHydrator;
 import ee.sda.ticketingsystem.repository.TicketRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -18,16 +18,16 @@ import java.util.List;
 public class TicketService {
 
     TicketRepository ticketRepository;
-    TicketiHydrator ticketiHydrator;
+    TicketHydrator ticketHydrator;
 
     @Transactional
     public TicketDTO createTicket(TicketDTO ticketDTO) {
-        Ticket ticket = ticketiHydrator.convertToEntity(ticketDTO);
+        Ticket ticket = ticketHydrator.convertToEntity(ticketDTO);
         ticket.setStatus(Status.OPEN);
         ticket.setCreationDate(new Date());
         Ticket savedTicket = ticketRepository.save(ticket);
 
-        return ticketiHydrator.convertToDTO(savedTicket);
+        return ticketHydrator.convertToDTO(savedTicket);
     }
 
     public List<Ticket> getAllTicket() {
@@ -40,15 +40,16 @@ public class TicketService {
                 .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id:" + id));
     }
     @Transactional
-    // Doesn´t work without Optional
     public TicketDTO editTicket(TicketDTO ticketDTO) {
-        Ticket ticket = ticketiHydrator.convertToEntity(ticketDTO);
+        Ticket ticket = ticketHydrator.convertToEntity(ticketDTO);
         if (!ticketRepository.existsById(ticket.getTicketId())) {
             throw new TicketNotFoundException("Ticket not found with id " + ticket.getTicketId());
         }
-        ticketRepository.save(ticket);
-        return ticketiHydrator.convertToDTO(ticket);
+        Ticket savedTicket = ticketRepository.save(ticket);
+        return ticketHydrator.convertToDTO(savedTicket);
     }
+
+
 
 
 }

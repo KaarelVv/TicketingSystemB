@@ -5,7 +5,7 @@ import ee.sda.ticketingsystem.entity.Ticket;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TicketiHydrator {
+public class TicketHydrator {
     public TicketDTO convertToDTO(Ticket ticket) {
         TicketDTO dto = new TicketDTO();
         dto.setTicketId(ticket.getTicketId());
