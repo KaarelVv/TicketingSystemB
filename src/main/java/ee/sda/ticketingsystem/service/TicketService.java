@@ -29,7 +29,6 @@ public class TicketService {
     @Transactional
     public TicketDTO createTicket(TicketDTO ticketDTO) {
         Ticket ticket = convertToEntity(ticketDTO);
-
         ticket.setStatus(Status.OPEN);
         ticket.setCreationDate(new Date());
 
@@ -47,22 +46,21 @@ public class TicketService {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id:" + id));
     }
-
+    @Transactional
     // Doesn´t work without Optional
     public TicketDTO editTicket(TicketDTO ticketDTO) {
 
         Ticket ticket = convertToEntity(ticketDTO);
 
-        if (ticketRepository.existsById(ticket.getTicketId())) {
-            ticketRepository.save(ticket);
-
-            return convertToDTO(ticket);
+        if (!ticketRepository.existsById(ticket.getTicketId())) {
+            throw new TicketNotFoundException("Ticket not found with id " + ticket.getTicketId());
         }
 
-
+        ticketRepository.save(ticket);
+        return convertToDTO(ticket);
     }
 
-    private TicketDTO convertToDTO(Ticket ticket){
+    private TicketDTO convertToDTO(Ticket ticket) {
         TicketDTO dto = new TicketDTO();
         dto.setTicketId(ticket.getTicketId());
         dto.setTitle(ticket.getTitle());

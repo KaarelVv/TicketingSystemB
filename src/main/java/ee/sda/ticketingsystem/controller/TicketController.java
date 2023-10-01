@@ -34,9 +34,10 @@ public class TicketController {
         return ticketService.createTicket(ticketDTO);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Ticket> editTicket(@RequestBody TicketDTO updatedTicket) {
+    public ResponseEntity<TicketDTO> editTicket(@PathVariable Integer id, @RequestBody TicketDTO updatedTicket) {
         try {
-            Ticket editedTicket = ticketService.editTicket(updatedTicket);
+            updatedTicket.setTicketId(id);
+            TicketDTO editedTicket = ticketService.editTicket(updatedTicket);
             return ResponseEntity.ok(editedTicket);
         } catch (TicketNotFoundException e) {
             return ResponseEntity.notFound().build();
