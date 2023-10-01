@@ -1,29 +1,33 @@
 package ee.sda.ticketingsystem.service;
 
+import ee.sda.ticketingsystem.enums.Status;
+import ee.sda.ticketingsystem.dto.TicketDTO;
 import ee.sda.ticketingsystem.entity.Ticket;
 import ee.sda.ticketingsystem.exception.TicketNotFoundException;
+import ee.sda.ticketingsystem.hydrator.TicketHydrator;
 import ee.sda.ticketingsystem.repository.TicketRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class TicketService {
 
-
-    @Autowired
     TicketRepository ticketRepository;
+    TicketHydrator ticketHydrator;
 
-    public Ticket createTicket(Ticket ticket) {
+    @Transactional
+    public TicketDTO createTicket(TicketDTO ticketDTO) {
+        Ticket ticket = ticketHydrator.convertToEntity(ticketDTO);
+        ticket.setStatus(Status.OPEN);
+        ticket.setCreationDate(new Date());
+        Ticket savedTicket = ticketRepository.save(ticket);
 
-        // create new time creationDate
-        LocalDateTime date = LocalDateTime.now();
-        ticket.setCreationDate(date);
-
-        return ticketRepository.save(ticket);
+        return ticketHydrator.convertToDTO(savedTicket);
     }
 
     public List<Ticket> getAllTicket() {
@@ -35,23 +39,16 @@ public class TicketService {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id:" + id));
     }
-
-    // Doesn´t work without Optional
-    public Ticket editTicket(Integer id, Ticket updatedTicket) {
-        Optional<Ticket> existingTicketOptional = ticketRepository.findById(id);
-        if (existingTicketOptional.isPresent()) {
-
-            Ticket existingTicket = existingTicketOptional.get();
-            existingTicket.setTitle(updatedTicket.getTitle());
-            existingTicket.setStatus(updatedTicket.getStatus());
-            existingTicket.setCategory(updatedTicket.getCategory());
-            existingTicket.setCreationDate(updatedTicket.getCreationDate());
-
-            return ticketRepository.save(existingTicket);
-        } else {
-            throw new TicketNotFoundException("Ticket not found with id: " + id);
+    @Transactional
+    public TicketDTO editTicket(TicketDTO ticketDTO) {
+        Ticket ticket = ticketHydrator.convertToEntity(ticketDTO);
+        if (!ticketRepository.existsById(ticket.getTicketId())) {
+            throw new TicketNotFoundException("Ticket not found with id " + ticket.getTicketId());
         }
-
-
+        Ticket savedTicket = ticketRepository.save(ticket);
+        return ticketHydrator.convertToDTO(savedTicket);
     }
+
+
+
 }

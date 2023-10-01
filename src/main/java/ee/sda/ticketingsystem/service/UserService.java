@@ -4,7 +4,8 @@ import ee.sda.ticketingsystem.dto.UserDto;
 import ee.sda.ticketingsystem.entity.User;
 import ee.sda.ticketingsystem.exception.UserNotFoundException;
 import ee.sda.ticketingsystem.repository.UserRepository;
-import lombok.AllArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,10 +30,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User createUser(UserDto userDto) {
-        if (userRepository.existsById(userDto.getUserId())) {
-            throw new RuntimeException("User id already exist");
-        }
+    public UserDto createUser(UserDto userDto) {
+     
         User user = new User()
                 .setUserId(userDto.getUserId())
                 .setEmail(userDto.getEmail())
@@ -44,3 +43,8 @@ public class UserService {
 
     }
 }
+    
+
+
+
+

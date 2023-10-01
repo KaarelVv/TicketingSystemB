@@ -1,5 +1,6 @@
 package ee.sda.ticketingsystem.controller;
 
+import ee.sda.ticketingsystem.dto.TicketDTO;
 import ee.sda.ticketingsystem.entity.Ticket;
 import ee.sda.ticketingsystem.exception.TicketNotFoundException;
 import ee.sda.ticketingsystem.repository.TicketRepository;
@@ -29,13 +30,14 @@ public class TicketController {
         return ticketService.getAllTicket();
     }
     @PostMapping
-    public Ticket createTicket(@RequestBody Ticket ticket) {
-        return ticketService.createTicket(ticket);
+    public TicketDTO createTicket(@RequestBody TicketDTO ticketDTO) {
+        return ticketService.createTicket(ticketDTO);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Ticket> editTicket(@PathVariable Integer id, @RequestBody Ticket updatedTicket) {
+    public ResponseEntity<TicketDTO> editTicket(@PathVariable Integer id, @RequestBody TicketDTO updatedTicket) {
         try {
-            Ticket editedTicket = ticketService.editTicket(id, updatedTicket);
+            updatedTicket.setTicketId(id);
+            TicketDTO editedTicket = ticketService.editTicket(updatedTicket);
             return ResponseEntity.ok(editedTicket);
         } catch (TicketNotFoundException e) {
             return ResponseEntity.notFound().build();
