@@ -1,9 +1,5 @@
 package ee.sda.ticketingsystem.service;
 
-import ee.sda.ticketingsystem.component.UserType;
-import ee.sda.ticketingsystem.dto.TicketDTO;
-import ee.sda.ticketingsystem.dto.UserDTO;
-import ee.sda.ticketingsystem.entity.Ticket;
 import ee.sda.ticketingsystem.entity.User;
 import ee.sda.ticketingsystem.exception.UserNotFoundException;
 import ee.sda.ticketingsystem.repository.UserRepository;
@@ -34,7 +30,7 @@ public class UserService {
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
-    
+
     }
 
 
