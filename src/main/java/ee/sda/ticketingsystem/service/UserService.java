@@ -1,8 +1,13 @@
 package ee.sda.ticketingsystem.service;
 
+import ee.sda.ticketingsystem.component.UserType;
+import ee.sda.ticketingsystem.dto.TicketDTO;
+import ee.sda.ticketingsystem.dto.UserDTO;
+import ee.sda.ticketingsystem.entity.Ticket;
 import ee.sda.ticketingsystem.entity.User;
 import ee.sda.ticketingsystem.exception.UserNotFoundException;
 import ee.sda.ticketingsystem.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,4 +34,22 @@ public class UserService {
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
-}
+
+    public User user(UserDTO userDTO) {
+        if(userRepository.existsByEmail(userDTO.getEmail())){
+            throw new RuntimeException("Username already exists");
+        }
+        User user = new User()
+                .setName(userDTO.getName())
+                .setUserId(userDTO.getUserId())
+                .setEmail(userDTO.getEmail())
+                .setPassword(userDTO.getPassword())
+                .setUserType(userDTO.getUserType());
+
+        return  userRepository.save(user);
+    }
+    }
+
+
+
+
