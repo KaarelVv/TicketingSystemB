@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
-@Accessors
+@Accessors(chain = true)
 public class UserHydrator {
 
     public UserDTO convertToDTO(User user) {
@@ -21,11 +21,11 @@ public class UserHydrator {
 
     public User convertToEntity(UserDTO dto) {
         User user = new User();
-        user.setUserId(user.getUserId());
-        user.setName(user.getName());
-        user.setEmail(user.getEmail());
-        user.setPassword(user.getPassword());
-        user.setUserType(user.getUserType());
+        user.setUserId(dto.getUserId());
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setUserType(dto.getUserType());
         return user;
     }
 }

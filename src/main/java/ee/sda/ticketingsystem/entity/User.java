@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 @Accessors(chain = true)
 @Table(name = "profile")
+
 public class User {
 
     @Id
