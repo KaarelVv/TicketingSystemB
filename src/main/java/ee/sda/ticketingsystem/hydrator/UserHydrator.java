@@ -26,6 +26,7 @@ public class UserHydrator {
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
         user.setUserType(dto.getUserType());
+        user.setRegisteredAt(dto.getRegisteredAt());
         return user;
     }
 }

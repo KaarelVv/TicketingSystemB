@@ -3,10 +3,12 @@ package ee.sda.ticketingsystem.entity;
 
 import ee.sda.ticketingsystem.enums.UserType;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -28,5 +30,6 @@ public class User {
     private UserType userType;
     @OneToMany(mappedBy = "user")
     private List<Ticket> ticket;
+    private Date registeredAt;
 
 }

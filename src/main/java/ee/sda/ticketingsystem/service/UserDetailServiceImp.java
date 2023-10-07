@@ -1,5 +1,6 @@
-package ee.sda.ticketingsystem.component;
+package ee.sda.ticketingsystem.service;
 
+import ee.sda.ticketingsystem.component.CustomUserDetails;
 import ee.sda.ticketingsystem.entity.User;
 import ee.sda.ticketingsystem.repository.UserRepository;
 import lombok.AllArgsConstructor;

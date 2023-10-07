@@ -1,7 +1,7 @@
 package ee.sda.ticketingsystem.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ee.sda.ticketingsystem.component.UserDetailServiceImp;
+import ee.sda.ticketingsystem.service.UserDetailServiceImp;
 import ee.sda.ticketingsystem.dto.UserDTO;
 import ee.sda.ticketingsystem.entity.User;
 import lombok.AllArgsConstructor;
@@ -71,18 +71,18 @@ public class SecurityConfig {
         return formLogin -> formLogin
                 .loginProcessingUrl(LOGIN_ENDPOINT)
                 .successHandler((request, response, authentication) -> {
+                    System.out.println("Login successful");
                     response.setContentType("application/json;charset=UTF-8");
                     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                     User userEntity = userDetailServiceImp.findByUsername(userDetails.getUsername());
-                    UserDTO userDTO = userEntityToUserDto(userEntity);
-                    String json = mapper.writeValueAsString(userDTO);
+                    String json = mapper.writeValueAsString(userEntityToUserDto(userEntity));
                     response.getWriter().write(json);
                 });
     }
 
     private Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authRequests() {
         return authorizeRequests -> authorizeRequests
-                .requestMatchers(new AntPathRequestMatcher(REGISTER_ENDPOINT, "POST")).permitAll()
+                .requestMatchers(REGISTER_ENDPOINT,LOGIN_ENDPOINT).permitAll()
                 .anyRequest().authenticated();
     }
 
@@ -94,6 +94,10 @@ public class SecurityConfig {
         userDTO.setName(userEntity.getName());
 
         return  userDTO;
+
+
+
+
     }
 
 

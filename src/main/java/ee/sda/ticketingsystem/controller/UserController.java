@@ -1,5 +1,6 @@
 package ee.sda.ticketingsystem.controller;
 
+import ee.sda.ticketingsystem.component.SecurityUtilities;
 import ee.sda.ticketingsystem.dto.UserDTO;
 
 import ee.sda.ticketingsystem.service.UserService;
@@ -16,6 +17,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private SecurityUtilities securityUtilities;
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> listAllUsers() {
@@ -37,13 +39,17 @@ public class UserController {
         UserDTO createdUser = userService.createUser(userDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
-    @PostMapping("/login")
-    public ResponseEntity<UserDTO> loginUser(@RequestBody UserDTO userDTO) throws Exception {
-        System.out.println("Email: " + userDTO.getEmail());
-        System.out.println("Password: " + userDTO.getPassword());
-        UserDTO loginUser = userService.loginUser(userDTO);
-        return new ResponseEntity<>(loginUser, HttpStatus.CREATED);
-    }
+
+
+
+
+//    @PostMapping("/login")
+//    public ResponseEntity<UserDTO> loginUser(@RequestBody UserDTO userDTO) throws Exception {
+//        System.out.println("Email: " + userDTO.getEmail());
+//        System.out.println("Password: " + userDTO.getPassword());
+//        UserDTO loginUser = userService.loginUser(userDTO);
+//        return new ResponseEntity<>(loginUser, HttpStatus.CREATED);
+//    }
 
 
 

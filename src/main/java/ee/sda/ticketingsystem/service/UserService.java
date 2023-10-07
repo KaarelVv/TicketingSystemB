@@ -1,6 +1,5 @@
 package ee.sda.ticketingsystem.service;
 
-import ee.sda.ticketingsystem.component.UserDetailServiceImp;
 import ee.sda.ticketingsystem.dto.UserDTO;
 import ee.sda.ticketingsystem.entity.User;
 import ee.sda.ticketingsystem.exception.InvalidPasswordException;
