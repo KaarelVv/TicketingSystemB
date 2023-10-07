@@ -74,7 +74,8 @@ public class SecurityConfig {
                     response.setContentType("application/json;charset=UTF-8");
                     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                     User userEntity = userDetailServiceImp.findByUsername(userDetails.getUsername());
-                    String json = mapper.writeValueAsString(userEntityToUserDto(userEntity));
+                    UserDTO userDTO = userEntityToUserDto(userEntity);
+                    String json = mapper.writeValueAsString(userDTO);
                     response.getWriter().write(json);
                 });
     }
@@ -92,11 +93,7 @@ public class SecurityConfig {
         userDTO.setUserType(userEntity.getUserType());
         userDTO.setName(userEntity.getName());
 
-        return new UserDTO();
-
-
-
-
+        return  userDTO;
     }
 
 

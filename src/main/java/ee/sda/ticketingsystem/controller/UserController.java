@@ -39,6 +39,8 @@ public class UserController {
     }
     @PostMapping("/login")
     public ResponseEntity<UserDTO> loginUser(@RequestBody UserDTO userDTO) throws Exception {
+        System.out.println("Email: " + userDTO.getEmail());
+        System.out.println("Password: " + userDTO.getPassword());
         UserDTO loginUser = userService.loginUser(userDTO);
         return new ResponseEntity<>(loginUser, HttpStatus.CREATED);
     }

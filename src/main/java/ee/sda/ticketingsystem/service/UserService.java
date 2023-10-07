@@ -7,8 +7,10 @@ import ee.sda.ticketingsystem.exception.InvalidPasswordException;
 import ee.sda.ticketingsystem.exception.UserNotFoundException;
 import ee.sda.ticketingsystem.hydrator.UserHydrator;
 import ee.sda.ticketingsystem.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,9 +22,11 @@ import java.util.stream.Collectors;
 public class UserService {
 
 
-    UserRepository userRepository;
-    UserHydrator userHydrator;
-    UserDetailServiceImp userDetailServiceImp;
+    private UserRepository userRepository;
+    private UserHydrator userHydrator;
+    private UserDetailServiceImp userDetailServiceImp;
+    private PasswordEncoder passwordEncoder;
+
 
 
     public UserDTO getUserById(Integer id) {
@@ -40,14 +44,14 @@ public class UserService {
                 .map(userHydrator::convertToDTO)
                 .collect(Collectors.toList());
     }
-
+    @Transactional
     public UserDTO createUser(UserDTO userDto) {
         User user = userHydrator.convertToEntity(userDto)
                 .setUserId(userDto.getUserId())
                 .setEmail(userDto.getEmail())
                 .setName(userDto.getName())
                 .setUserType(userDto.getUserType())
-                .setPassword(userDto.getPassword());
+                .setPassword(passwordEncoder.encode(userDto.getPassword()));
         User savedUser = userRepository.save(user);
 
         return userHydrator.convertToDTO(savedUser);
