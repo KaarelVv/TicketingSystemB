@@ -2,13 +2,11 @@ package ee.sda.ticketingsystem.service;
 
 import ee.sda.ticketingsystem.dto.UserDTO;
 import ee.sda.ticketingsystem.entity.User;
-import ee.sda.ticketingsystem.exception.InvalidPasswordException;
 import ee.sda.ticketingsystem.exception.UserNotFoundException;
 import ee.sda.ticketingsystem.hydrator.UserHydrator;
 import ee.sda.ticketingsystem.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -56,25 +54,25 @@ public class UserService {
         return userHydrator.convertToDTO(savedUser);
     }
 
-    public UserDTO loginUser(UserDTO userDTO) throws Exception {
-        User user = userHydrator.convertToEntity(userDTO)
-                .setEmail(userDTO.getEmail())
-                .setPassword(userDTO.getPassword());
-
-        UserDetails userDetails = userDetailServiceImp.loadUserByUsername(user.getEmail());
-
-        if (userDetails != null) {
-
-            if (userDetails.getPassword().equals(user.getPassword())) {
-                User userEntity = userDetailServiceImp.findByUsername(user.getEmail());
-                return userHydrator.convertToDTO(userEntity);
-            } else {
-                throw new InvalidPasswordException("Wrong Password!");
-            }
-        } else {
-            throw new UserNotFoundException("User not found !");
-        }
-    }
+//    public UserDTO loginUser(UserDTO userDTO) throws Exception {
+//        User user = userHydrator.convertToEntity(userDTO)
+//                .setEmail(userDTO.getEmail())
+//                .setPassword(userDTO.getPassword());
+//
+//        UserDetails userDetails = userDetailServiceImp.loadUserByUsername(user.getEmail());
+//
+//        if (userDetails != null) {
+//
+//            if (userDetails.getPassword().equals(user.getPassword())) {
+//                User userEntity = userDetailServiceImp.findByUsername(user.getEmail());
+//                return userHydrator.convertToDTO(userEntity);
+//            } else {
+//                throw new InvalidPasswordException("Wrong Password!");
+//            }
+//        } else {
+//            throw new UserNotFoundException("User not found !");
+//        }
+//    }
 }
 
 
