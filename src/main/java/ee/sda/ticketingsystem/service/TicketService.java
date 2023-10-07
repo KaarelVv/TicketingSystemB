@@ -1,8 +1,8 @@
 package ee.sda.ticketingsystem.service;
 
-import ee.sda.ticketingsystem.enums.Status;
 import ee.sda.ticketingsystem.dto.TicketDTO;
 import ee.sda.ticketingsystem.entity.Ticket;
+import ee.sda.ticketingsystem.enums.Status;
 import ee.sda.ticketingsystem.exception.TicketNotFoundException;
 import ee.sda.ticketingsystem.hydrator.TicketHydrator;
 import ee.sda.ticketingsystem.repository.TicketRepository;

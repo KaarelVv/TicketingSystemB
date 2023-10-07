@@ -2,7 +2,6 @@ package ee.sda.ticketingsystem.hydrator;
 
 import ee.sda.ticketingsystem.dto.UserDTO;
 import ee.sda.ticketingsystem.entity.User;
-import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;
 
