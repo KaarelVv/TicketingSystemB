@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/ticket")
+@RequestMapping("/api/v1/ticket")
 public class TicketController {
 
     TicketService ticketService;

@@ -2,11 +2,11 @@ package ee.sda.ticketingsystem.hydrator;
 
 import ee.sda.ticketingsystem.dto.UserDTO;
 import ee.sda.ticketingsystem.entity.User;
-import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.stereotype.Component;
 
-@Data
-@Accessors
+@Component
+@Accessors(chain = true)
 public class UserHydrator {
 
     public UserDTO convertToDTO(User user) {
@@ -21,11 +21,12 @@ public class UserHydrator {
 
     public User convertToEntity(UserDTO dto) {
         User user = new User();
-        user.setUserId(user.getUserId());
-        user.setName(user.getName());
-        user.setEmail(user.getEmail());
-        user.setPassword(user.getPassword());
-        user.setUserType(user.getUserType());
+        user.setUserId(dto.getUserId());
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setUserType(dto.getUserType());
+        user.setRegisteredAt(dto.getRegisteredAt());
         return user;
     }
 }
