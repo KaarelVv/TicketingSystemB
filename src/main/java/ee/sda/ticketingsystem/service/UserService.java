@@ -7,6 +7,7 @@ import ee.sda.ticketingsystem.exception.InvalidPasswordException;
 import ee.sda.ticketingsystem.exception.UserNotFoundException;
 import ee.sda.ticketingsystem.hydrator.UserHydrator;
 import ee.sda.ticketingsystem.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,16 +17,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
 
     UserRepository userRepository;
     UserHydrator userHydrator;
     UserDetailServiceImp userDetailServiceImp;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
 
     public UserDTO getUserById(Integer id) {
@@ -44,7 +42,6 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     public UserDTO createUser(UserDTO userDto) {
         User user = userHydrator.convertToEntity(userDto)
                 .setUserId(userDto.getUserId())
@@ -72,14 +69,10 @@ public class UserService {
             } else {
                 throw new InvalidPasswordException("Wrong Password!");
             }
-
+        } else {
+            throw new UserNotFoundException("User not found !");
         }
-        else throw new UserNotFoundException("User not found !");
-
-
     }
-
-
 }
 
 

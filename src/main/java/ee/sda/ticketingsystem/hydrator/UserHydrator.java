@@ -4,8 +4,9 @@ import ee.sda.ticketingsystem.dto.UserDTO;
 import ee.sda.ticketingsystem.entity.User;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.stereotype.Component;
 
-@Data
+@Component
 @Accessors(chain = true)
 public class UserHydrator {
 

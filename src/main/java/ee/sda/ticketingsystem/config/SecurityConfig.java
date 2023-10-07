@@ -27,19 +27,18 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
-@NoArgsConstructor
+
 public class SecurityConfig {
 
-    private static final String REGISTER_ENDPOINT = "";
-    private static final String LOGIN_ENDPOINT = "";
-
+    private static final String REGISTER_ENDPOINT = "/api/v1/user/register";
+    private static final String LOGIN_ENDPOINT = "/api/v1/user/login";
     private static final int COOKIE_VALIDATION_MINUTES = 60;
 
     private UserDetailServiceImp userDetailServiceImp;
 
     private ObjectMapper mapper;
 
-    private UserHydrator userHydrator;
+
 
 
     @Bean
@@ -56,25 +55,18 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.authorizeHttpRequests(authorizationRequest())
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests(authRequests())
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(successLogin())
                 .rememberMe(rememberMe())
                 .build();
     }
 
-
-    private Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizationRequest() {
-        return authorizationRequest -> authorizationRequest
-                .requestMatchers(new AntPathRequestMatcher(REGISTER_ENDPOINT, "POST"))
-                .permitAll()
-                .anyRequest()
-                .authenticated();
-    }
-
     private Customizer<RememberMeConfigurer<HttpSecurity>> rememberMe() {
-        return rememberMe -> rememberMe.tokenValiditySeconds(COOKIE_VALIDATION_MINUTES * 60 * 60).useSecureCookie(true);
+        return rememberMe -> rememberMe
+                .tokenValiditySeconds(COOKIE_VALIDATION_MINUTES * 60 * 60)
+                .useSecureCookie(true);
     }
 
     private Customizer<FormLoginConfigurer<HttpSecurity>> successLogin() {
@@ -84,9 +76,29 @@ public class SecurityConfig {
                     response.setContentType("application/json;charset=UTF-8");
                     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                     User userEntity = userDetailServiceImp.findByUsername(userDetails.getUsername());
-                    String json = mapper.writeValueAsString(userHydrator.convertToDTO(userEntity));
+                    String json = mapper.writeValueAsString(userEntityToUserDto(userEntity));
                     response.getWriter().write(json);
                 });
+    }
+
+    private Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authRequests() {
+        return authorizeRequests -> authorizeRequests
+                .requestMatchers(new AntPathRequestMatcher(REGISTER_ENDPOINT, "POST")).permitAll()
+                .anyRequest().authenticated();
+    }
+
+    private UserDTO userEntityToUserDto(User userEntity) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserId(userEntity.getUserId());
+        userDTO.setEmail(userEntity.getEmail());
+        userDTO.setUserType(userEntity.getUserType());
+        userDTO.setName(userEntity.getName());
+
+        return new UserDTO();
+
+
+
+
     }
 
 
