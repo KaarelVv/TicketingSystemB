@@ -1,11 +1,13 @@
 package ee.sda.ticketingsystem.entity;
 
+import ee.sda.ticketingsystem.enums.Priority;
 import ee.sda.ticketingsystem.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 import java.util.List;
@@ -15,20 +17,26 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Accessors(chain = true)
 public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ticketId;
     private String title;
+    @Column(length = 2000)
+    private String description;
     private Date creationDate;
-    private String priority;
-    private String category;
+    private Priority priority;
     private Status status;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
+
     @OneToMany(mappedBy = "ticket")
     private List<Attachment> attachment;
+
     @OneToMany(mappedBy = "ticket")
     private List<Comment> comment;
 

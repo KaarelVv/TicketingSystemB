@@ -2,29 +2,30 @@ package ee.sda.ticketingsystem.hydrator;
 
 import ee.sda.ticketingsystem.dto.TicketDTO;
 import ee.sda.ticketingsystem.entity.Ticket;
+import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;
 
 @Component
+@Accessors(chain = true)
 public class TicketHydrator {
     public TicketDTO convertToDTO(Ticket ticket) {
-        TicketDTO dto = new TicketDTO();
-        dto.setTicketId(ticket.getTicketId());
-        dto.setTitle(ticket.getTitle());
-        dto.setCreationDate(ticket.getCreationDate());
-        dto.setPriority(ticket.getPriority());
-        dto.setCategory(ticket.getCategory());
-        dto.setStatus(ticket.getStatus());
-        return dto;
+        return new TicketDTO()
+                .setTicketId(ticket.getTicketId())
+                .setTitle(ticket.getTitle())
+                .setDescription(ticket.getDescription())
+                .setCreationDate(ticket.getCreationDate())
+                .setPriority(ticket.getPriority())
+                .setStatus(ticket.getStatus())
+                .setUserId(ticket.getUser().getUserId());
     }
 
     public Ticket convertToEntity(TicketDTO dto) {
-        Ticket ticket = new Ticket();
-        ticket.setTicketId(dto.getTicketId());
-        ticket.setTitle(dto.getTitle());
-        ticket.setCreationDate(dto.getCreationDate());
-        ticket.setPriority(dto.getPriority());
-        ticket.setCategory(dto.getCategory());
-        ticket.setStatus(dto.getStatus());
-
-        return ticket;
-    }}
+        return new Ticket()
+                .setTicketId(dto.getTicketId())
+                .setTitle(dto.getTitle())
+                .setDescription(dto.getDescription())
+                .setCreationDate(dto.getCreationDate())
+                .setPriority(dto.getPriority())
+                .setStatus(dto.getStatus());
+    }
+}

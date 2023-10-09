@@ -42,12 +42,6 @@ public class SecurityConfig {
     private ObjectMapper mapper;
 
 
-
-
-
-
-
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -76,8 +70,6 @@ public class SecurityConfig {
         return source;
     }
 
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -89,8 +81,6 @@ public class SecurityConfig {
                 .rememberMe(rememberMe())
                 .build();
     }
-
-
 
     private Customizer<RememberMeConfigurer<HttpSecurity>> rememberMe() {
         return rememberMe -> rememberMe
@@ -125,11 +115,5 @@ public class SecurityConfig {
         userDTO.setName(userEntity.getName());
 
         return  userDTO;
-
-
-
-
     }
-
-
 }

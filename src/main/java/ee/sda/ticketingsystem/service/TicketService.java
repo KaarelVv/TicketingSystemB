@@ -2,55 +2,79 @@ package ee.sda.ticketingsystem.service;
 
 import ee.sda.ticketingsystem.dto.TicketDTO;
 import ee.sda.ticketingsystem.entity.Ticket;
+import ee.sda.ticketingsystem.entity.User;
+import ee.sda.ticketingsystem.enums.Priority;
 import ee.sda.ticketingsystem.enums.Status;
 import ee.sda.ticketingsystem.exception.TicketNotFoundException;
+import ee.sda.ticketingsystem.exception.UserNotFoundException;
 import ee.sda.ticketingsystem.hydrator.TicketHydrator;
 import ee.sda.ticketingsystem.repository.TicketRepository;
+import ee.sda.ticketingsystem.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@NoArgsConstructor
 public class TicketService {
 
-    TicketRepository ticketRepository;
-    TicketHydrator ticketHydrator;
+    private TicketRepository ticketRepository;
+    private TicketHydrator ticketHydrator;
+    private UserRepository userRepository;
+
+
+    @Value("${ticket.defaultStatus}")
+    private String defaultStatus;
+
+    @Value("${ticket.defaultPriority}")
+    private String defaultPriority;
 
     @Transactional
     public TicketDTO createTicket(TicketDTO ticketDTO) {
         Ticket ticket = ticketHydrator.convertToEntity(ticketDTO);
-        ticket.setStatus(Status.OPEN);
-        ticket.setCreationDate(new Date());
-        ticket.setUser(ticket.getUser());
+
+        User user = userRepository.findById(ticketDTO.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User with id:" + ticketDTO.getUserId() + " not found"));
+        ticket.setStatus(Status.valueOf(defaultStatus))
+                .setPriority(Priority.valueOf(defaultPriority))
+                .setCreationDate(new Date())
+                .setUser(user);
+
         Ticket savedTicket = ticketRepository.save(ticket);
 
         return ticketHydrator.convertToDTO(savedTicket);
     }
 
-    public List<Ticket> getAllTicket() {
-        return ticketRepository.findAll();
+    public List<TicketDTO> getAllTicket() {
+        List<Ticket> tickets = ticketRepository.findAll();
+        return tickets.stream().map(ticket -> ticketHydrator.convertToDTO(ticket))
+                .collect(Collectors.toList());
     }
 
     // Kuigi pakkus algselt teha Optional<Ticket> .orElseThrow() asemel
     public Ticket getTicketById(Integer id) {
         return ticketRepository.findById(id)
-                .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id:" + id));
+                .orElseThrow(() -> new TicketNotFoundException("Ticket with id:" + id + " not found"));
     }
+
     @Transactional
     public TicketDTO editTicket(TicketDTO ticketDTO) {
-        Ticket ticket = ticketHydrator.convertToEntity(ticketDTO);
-        if (!ticketRepository.existsById(ticket.getTicketId())) {
-            throw new TicketNotFoundException("Ticket not found with id " + ticket.getTicketId());
-        }
-        Ticket savedTicket = ticketRepository.save(ticket);
-        return ticketHydrator.convertToDTO(savedTicket);
+        Ticket ticket = ticketRepository.findById(ticketDTO.getTicketId())
+                .orElseThrow(() -> new TicketNotFoundException("Ticket with id:" + ticketDTO.getTicketId() + " not found"))
+                .setTitle(ticketDTO.getTitle())
+                .setDescription(ticketDTO.getDescription())
+                .setStatus(ticketDTO.getStatus())
+                .setPriority(ticketDTO.getPriority());
+
+        return ticketHydrator.convertToDTO(ticket);
     }
-
-
 
 
 }

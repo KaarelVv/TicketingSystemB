@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Accessors(chain = true)
-@Table(name = "profile")
+@Table(name = "customer")
 
 public class User {
 
@@ -27,7 +27,7 @@ public class User {
     private String email;
     private String password;
     private UserType userType;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) //, orphanRemoval = true
     private List<Ticket> ticket;
     private Date registeredAt;
 

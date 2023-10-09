@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Accessors(chain = true)
 public class Attachment {
 
     @Id
@@ -22,6 +24,7 @@ public class Attachment {
     private String fileName;
     private Integer fileSize;
     private Date uploadDate;
+
     @ManyToOne
     private Ticket ticket;
 }

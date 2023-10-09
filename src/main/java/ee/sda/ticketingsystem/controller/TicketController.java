@@ -15,16 +15,15 @@ import java.util.List;
 @RequestMapping("/api/v1/ticket")
 public class TicketController {
 
-    TicketService ticketService;
+    private TicketService ticketService;
 
-    // localhost:8080/ticket/12
     @GetMapping("/{id}")
     public ResponseEntity<Ticket> getTicket(@PathVariable Integer id) {
         Ticket ticket = ticketService.getTicketById(id);
         return ResponseEntity.ok().body(ticket);
     }
     @GetMapping
-    public List<Ticket> getTickets() {
+    public List<TicketDTO> getTickets() {
         return ticketService.getAllTicket();
     }
 

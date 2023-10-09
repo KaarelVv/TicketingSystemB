@@ -10,24 +10,23 @@ import org.springframework.stereotype.Component;
 public class UserHydrator {
 
     public UserDTO convertToDTO(User user) {
-        UserDTO dto = new UserDTO();
-        dto.setUserId(user.getUserId());
-        dto.setName(user.getName());
-        dto.setEmail(user.getEmail());
-        dto.setPassword(user.getPassword());
-        dto.setUserType(user.getUserType());
-        return dto;
+        return new UserDTO()
+                .setUserId(user.getUserId())
+                .setName(user.getName())
+                .setEmail(user.getEmail())
+                .setPassword(user.getPassword())
+                .setUserType(user.getUserType())
+                .setRegisteredAt(user.getRegisteredAt());
     }
 
     public User convertToEntity(UserDTO dto) {
-        User user = new User();
-        user.setUserId(dto.getUserId());
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
-        user.setUserType(dto.getUserType());
-        user.setRegisteredAt(dto.getRegisteredAt());
-        return user;
+        return new User()
+                .setUserId(dto.getUserId())
+                .setName(dto.getName())
+                .setEmail(dto.getEmail())
+                .setPassword(dto.getPassword())
+                .setUserType(dto.getUserType())
+                .setRegisteredAt(dto.getRegisteredAt());
     }
 }
 
