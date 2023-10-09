@@ -1,14 +1,13 @@
 package ee.sda.ticketingsystem.dto;
 
 import ee.sda.ticketingsystem.entity.Ticket;
-
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
 
 @Data
-@Accessors
+@Accessors(chain = true)
 public class AttachmentDTO {
 
     private Integer attachmentId;

@@ -3,10 +3,8 @@ package ee.sda.ticketingsystem.controller;
 import ee.sda.ticketingsystem.dto.TicketDTO;
 import ee.sda.ticketingsystem.entity.Ticket;
 import ee.sda.ticketingsystem.exception.TicketNotFoundException;
-import ee.sda.ticketingsystem.repository.TicketRepository;
 import ee.sda.ticketingsystem.service.TicketService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +27,7 @@ public class TicketController {
     public List<Ticket> getTickets() {
         return ticketService.getAllTicket();
     }
+
     @PostMapping
     public TicketDTO createTicket(@RequestBody TicketDTO ticketDTO) {
         return ticketService.createTicket(ticketDTO);

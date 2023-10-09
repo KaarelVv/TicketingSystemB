@@ -25,6 +25,7 @@ public class TicketService {
         Ticket ticket = ticketHydrator.convertToEntity(ticketDTO);
         ticket.setStatus(Status.OPEN);
         ticket.setCreationDate(new Date());
+        ticket.setUser(ticket.getUser());
         Ticket savedTicket = ticketRepository.save(ticket);
 
         return ticketHydrator.convertToDTO(savedTicket);

@@ -3,7 +3,6 @@ package ee.sda.ticketingsystem.entity;
 
 import ee.sda.ticketingsystem.enums.UserType;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -28,7 +27,7 @@ public class User {
     private String email;
     private String password;
     private UserType userType;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ticket> ticket;
     private Date registeredAt;
 
