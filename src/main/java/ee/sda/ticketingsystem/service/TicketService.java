@@ -13,6 +13,7 @@ import ee.sda.ticketingsystem.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 @NoArgsConstructor
 public class TicketService {
+
+    @Autowired
+    public TicketService(TicketRepository ticketRepository, TicketHydrator ticketHydrator, UserRepository userRepository) {
+        this.ticketRepository = ticketRepository;
+        this.ticketHydrator = ticketHydrator;
+        this.userRepository = userRepository;
+    }
 
     private TicketRepository ticketRepository;
     private TicketHydrator ticketHydrator;
@@ -38,14 +45,16 @@ public class TicketService {
 
     @Transactional
     public TicketDTO createTicket(TicketDTO ticketDTO) {
-        Ticket ticket = ticketHydrator.convertToEntity(ticketDTO);
 
         User user = userRepository.findById(ticketDTO.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("User with id:" + ticketDTO.getUserId() + " not found"));
-        ticket.setStatus(Status.valueOf(defaultStatus))
+
+        Ticket ticket = ticketHydrator.convertToEntity(ticketDTO)
+                .setStatus(Status.valueOf(defaultStatus))
                 .setPriority(Priority.valueOf(defaultPriority))
                 .setCreationDate(new Date())
                 .setUser(user);
+        System.out.println("Ticket created!");
 
         Ticket savedTicket = ticketRepository.save(ticket);
 
