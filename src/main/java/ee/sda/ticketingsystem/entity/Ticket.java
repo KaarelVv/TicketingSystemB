@@ -1,7 +1,7 @@
 package ee.sda.ticketingsystem.entity;
 
-import ee.sda.ticketingsystem.enums.Priority;
-import ee.sda.ticketingsystem.enums.Status;
+import ee.sda.ticketingsystem.enums.ticket.Priority;
+import ee.sda.ticketingsystem.enums.ticket.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

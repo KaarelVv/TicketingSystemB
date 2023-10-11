@@ -1,7 +1,7 @@
 package ee.sda.ticketingsystem.dto;
 
-import ee.sda.ticketingsystem.enums.Priority;
-import ee.sda.ticketingsystem.enums.Status;
+import ee.sda.ticketingsystem.enums.ticket.Priority;
+import ee.sda.ticketingsystem.enums.ticket.Status;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.experimental.Accessors;

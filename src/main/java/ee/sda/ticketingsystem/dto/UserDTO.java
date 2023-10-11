@@ -1,7 +1,7 @@
 package ee.sda.ticketingsystem.dto;
 
 
-import ee.sda.ticketingsystem.enums.UserType;
+import ee.sda.ticketingsystem.enums.user.UserType;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

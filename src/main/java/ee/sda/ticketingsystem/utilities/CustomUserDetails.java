@@ -1,4 +1,4 @@
-package ee.sda.ticketingsystem.component;
+package ee.sda.ticketingsystem.utilities;
 
 import ee.sda.ticketingsystem.entity.User;
 import lombok.Getter;

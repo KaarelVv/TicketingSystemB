@@ -3,15 +3,14 @@ package ee.sda.ticketingsystem.service;
 import ee.sda.ticketingsystem.dto.TicketDTO;
 import ee.sda.ticketingsystem.entity.Ticket;
 import ee.sda.ticketingsystem.entity.User;
-import ee.sda.ticketingsystem.enums.Priority;
-import ee.sda.ticketingsystem.enums.Status;
+import ee.sda.ticketingsystem.enums.ticket.Priority;
+import ee.sda.ticketingsystem.enums.ticket.Status;
 import ee.sda.ticketingsystem.exception.TicketNotFoundException;
 import ee.sda.ticketingsystem.exception.UserNotFoundException;
 import ee.sda.ticketingsystem.hydrator.TicketHydrator;
 import ee.sda.ticketingsystem.repository.TicketRepository;
 import ee.sda.ticketingsystem.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,9 +67,11 @@ public class TicketService {
     }
 
     // Kuigi pakkus algselt teha Optional<Ticket> .orElseThrow() asemel
-    public Ticket getTicketById(Integer id) {
-        return ticketRepository.findById(id)
+    public TicketDTO getTicketById(Integer id) {
+        Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new TicketNotFoundException("Ticket with id:" + id + " not found"));
+
+        return ticketHydrator.convertToDTO(ticket);
     }
 
     @Transactional

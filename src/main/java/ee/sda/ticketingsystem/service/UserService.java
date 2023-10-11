@@ -2,7 +2,7 @@ package ee.sda.ticketingsystem.service;
 
 import ee.sda.ticketingsystem.dto.UserDTO;
 import ee.sda.ticketingsystem.entity.User;
-import ee.sda.ticketingsystem.enums.UserType;
+import ee.sda.ticketingsystem.enums.user.UserType;
 import ee.sda.ticketingsystem.exception.UserNotFoundException;
 import ee.sda.ticketingsystem.hydrator.UserHydrator;
 import ee.sda.ticketingsystem.repository.UserRepository;

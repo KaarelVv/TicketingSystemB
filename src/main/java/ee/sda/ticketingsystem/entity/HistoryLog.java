@@ -24,6 +24,8 @@ public class HistoryLog {
     private Date changeDate;
     private String oldStatus;
     private String newStatus;
-    private Integer changeByUserId;
+    private String oldPriority;
+    private String newPriority;
+    private Integer changeByAgentId;
 
 }

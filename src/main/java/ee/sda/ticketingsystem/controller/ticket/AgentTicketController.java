@@ -1,12 +1,10 @@
 package ee.sda.ticketingsystem.controller.ticket;
 
 import ee.sda.ticketingsystem.dto.TicketDTO;
-import ee.sda.ticketingsystem.entity.Ticket;
 import ee.sda.ticketingsystem.exception.TicketNotFoundException;
 import ee.sda.ticketingsystem.service.TicketService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,8 +33,8 @@ public class AgentTicketController {
         }
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Ticket> getTicket(@PathVariable Integer id) {
-        Ticket ticket = ticketService.getTicketById(id);
-        return ResponseEntity.ok().body(ticket);
+    public ResponseEntity<TicketDTO> getTicket(@PathVariable Integer id) {
+        TicketDTO ticketDTO = ticketService.getTicketById(id);
+        return ResponseEntity.ok().body(ticketDTO);
     }
 }

@@ -1,12 +1,10 @@
 package ee.sda.ticketingsystem.config;
 
-import ch.qos.logback.classic.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ee.sda.ticketingsystem.dto.UserDTO;
 import ee.sda.ticketingsystem.entity.User;
 import ee.sda.ticketingsystem.service.UserDetailServiceImp;
 import lombok.AllArgsConstructor;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

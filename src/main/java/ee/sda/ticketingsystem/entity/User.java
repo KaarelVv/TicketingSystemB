@@ -1,7 +1,7 @@
 package ee.sda.ticketingsystem.entity;
 
 
-import ee.sda.ticketingsystem.enums.UserType;
+import ee.sda.ticketingsystem.enums.user.UserType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

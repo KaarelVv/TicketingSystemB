@@ -1,8 +1,8 @@
 package ee.sda.ticketingsystem.service;
 
-import ee.sda.ticketingsystem.component.CustomUserDetails;
+import ee.sda.ticketingsystem.utilities.CustomUserDetails;
 import ee.sda.ticketingsystem.entity.User;
-import ee.sda.ticketingsystem.enums.UserType;
+import ee.sda.ticketingsystem.enums.user.UserType;
 import ee.sda.ticketingsystem.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
