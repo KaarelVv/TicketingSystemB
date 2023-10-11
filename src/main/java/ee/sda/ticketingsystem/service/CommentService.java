@@ -20,7 +20,7 @@ public class CommentService {
         Comment comment = commentHydrator.commentToEntity(commentDTO)
 
 
-                .setCommentId(commentDTO.getCommentId())
+                .setId(commentDTO.getId())
                 .setCommentDate(new Date())
                 .setContent(commentDTO.getContent());
 

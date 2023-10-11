@@ -16,7 +16,7 @@ public class SecurityUtilities {
         if (principal instanceof CustomUserDetails) {
             User user = ((CustomUserDetails) principal).getUser();
             return Optional.of(new UserDTO()
-                    .setUserId(user.getUserId())
+                    .setId(user.getId())
                     .setName(user.getName())
                     .setUserType(user.getUserType())
                     .setEmail(user.getEmail())

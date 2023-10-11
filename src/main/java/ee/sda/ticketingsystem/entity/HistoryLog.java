@@ -19,7 +19,8 @@ public class HistoryLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer logId;
+    private Integer id;
+
     private Date changeDate;
     private String oldStatus;
     private String newStatus;

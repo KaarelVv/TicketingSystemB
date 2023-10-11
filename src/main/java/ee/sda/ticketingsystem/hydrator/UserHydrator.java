@@ -11,7 +11,7 @@ public class UserHydrator {
 
     public UserDTO convertToDTO(User user) {
         return new UserDTO()
-                .setUserId(user.getUserId())
+                .setId(user.getId())
                 .setName(user.getName())
                 .setEmail(user.getEmail())
                 .setPassword(user.getPassword())
@@ -21,7 +21,7 @@ public class UserHydrator {
 
     public User convertToEntity(UserDTO dto) {
         return new User()
-                .setUserId(dto.getUserId())
+                .setId(dto.getId())
                 .setName(dto.getName())
                 .setEmail(dto.getEmail())
                 .setPassword(dto.getPassword())

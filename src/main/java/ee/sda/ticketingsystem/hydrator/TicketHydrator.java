@@ -10,18 +10,18 @@ import org.springframework.stereotype.Component;
 public class TicketHydrator {
     public TicketDTO convertToDTO(Ticket ticket) {
         return new TicketDTO()
-                .setTicketId(ticket.getTicketId())
+                .setId(ticket.getId())
                 .setTitle(ticket.getTitle())
                 .setDescription(ticket.getDescription())
                 .setCreationDate(ticket.getCreationDate())
                 .setPriority(ticket.getPriority())
                 .setStatus(ticket.getStatus())
-                .setUserId(ticket.getUser().getUserId());
+                .setUserId(ticket.getUser().getId());
     }
 
     public Ticket convertToEntity(TicketDTO dto) {
         return new Ticket()
-                .setTicketId(dto.getTicketId())
+                .setId(dto.getId())
                 .setTitle(dto.getTitle())
                 .setDescription(dto.getDescription())
                 .setCreationDate(dto.getCreationDate())

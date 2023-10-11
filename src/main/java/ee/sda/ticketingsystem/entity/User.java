@@ -15,17 +15,18 @@ import java.util.List;
 @Getter
 @Setter
 @Accessors(chain = true)
-@Table(name = "customer")
+@Table(name = "account")
 
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
+    private Integer id;
 
     private String name;
     private String email;
     private String password;
+    @Enumerated(EnumType.STRING)
     private UserType userType;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) //, orphanRemoval = true
     private List<Ticket> ticket;

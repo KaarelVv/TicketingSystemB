@@ -10,7 +10,7 @@ import java.util.Date;
 @Accessors(chain = true)
 public class AttachmentDTO {
 
-    private Integer attachmentId;
+    private Integer id;
     private String fileName;
     private Integer fileSize;
     private Date uploadDate;

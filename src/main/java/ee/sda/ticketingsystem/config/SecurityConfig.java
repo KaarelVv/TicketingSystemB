@@ -1,10 +1,12 @@
 package ee.sda.ticketingsystem.config;
 
+import ch.qos.logback.classic.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ee.sda.ticketingsystem.dto.UserDTO;
 import ee.sda.ticketingsystem.entity.User;
 import ee.sda.ticketingsystem.service.UserDetailServiceImp;
 import lombok.AllArgsConstructor;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -59,7 +61,7 @@ public class SecurityConfig {
         public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Allow this origin ie angular
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
 
         // Optional: Enable credentials, if you need to send cookies or authentication headers
@@ -104,12 +106,14 @@ public class SecurityConfig {
     private Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authRequests() {
         return authorizeRequests -> authorizeRequests
                 .requestMatchers(REGISTER_ENDPOINT,LOGIN_ENDPOINT).permitAll()
+                .requestMatchers("/api/v1/ticket/agent").hasRole("AGENT")
+                .requestMatchers("/api/v1/ticket/user").hasRole("USER")
                 .anyRequest().authenticated();
     }
 
     private UserDTO userEntityToUserDto(User userEntity) {
         UserDTO userDTO = new UserDTO();
-        userDTO.setUserId(userEntity.getUserId());
+        userDTO.setId(userEntity.getId());
         userDTO.setEmail(userEntity.getEmail());
         userDTO.setUserType(userEntity.getUserType());
         userDTO.setName(userEntity.getName());

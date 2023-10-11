@@ -9,14 +9,14 @@ public class CommentHydrator {
 
     public CommentDTO commentToDTO(Comment comment){
         return new CommentDTO()
-                .setCommentId(comment.getCommentId())
+                .setId(comment.getId())
                 .setCommentDate(comment.getCommentDate())
                 .setContent(comment.getContent());
     }
 
     public Comment commentToEntity(CommentDTO dto){
         return new Comment()
-                .setCommentId(dto.getCommentId())
+                .setId(dto.getId())
                 .setCommentDate(dto.getCommentDate())
                 .setContent(dto.getContent());
     }

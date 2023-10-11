@@ -14,7 +14,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class TicketDTO {
 
-    private Integer ticketId;
+    private Integer id;
     private String title;
     @Size(max = 2000, message = "Cannot be longer than 2000 characters")
     private String description;

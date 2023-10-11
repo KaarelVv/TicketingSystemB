@@ -22,7 +22,8 @@ public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ticketId;
+    private Integer id;
+
     private String title;
     @Column(length = 2000)
     private String description;

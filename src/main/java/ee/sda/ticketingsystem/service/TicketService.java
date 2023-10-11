@@ -75,8 +75,8 @@ public class TicketService {
 
     @Transactional
     public TicketDTO editTicket(TicketDTO ticketDTO) {
-        Ticket ticket = ticketRepository.findById(ticketDTO.getTicketId())
-                .orElseThrow(() -> new TicketNotFoundException("Ticket with id:" + ticketDTO.getTicketId() + " not found"))
+        Ticket ticket = ticketRepository.findById(ticketDTO.getId())
+                .orElseThrow(() -> new TicketNotFoundException("Ticket with id:" + ticketDTO.getId() + " not found"))
                 .setTitle(ticketDTO.getTitle())
                 .setDescription(ticketDTO.getDescription())
                 .setStatus(ticketDTO.getStatus())

@@ -19,7 +19,7 @@ public class Attachment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer attachmentId;
+    private Integer id;
 
     private String fileName;
     private Integer fileSize;

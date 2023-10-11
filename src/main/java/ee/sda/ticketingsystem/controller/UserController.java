@@ -15,7 +15,13 @@ import java.util.List;
 
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO userDTO) {
+        UserDTO createdUser = userService.createUser(userDTO);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    }
 
 
     @GetMapping
@@ -32,19 +38,6 @@ public class UserController {
         }
         return ResponseEntity.ok(userDTO);
     }
-
-    @PostMapping("/register")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        UserDTO createdUser = userService.createUser(userDTO);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-    }
-
-
-
-
-
-
-
 
 
 }
