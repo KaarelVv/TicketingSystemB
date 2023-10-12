@@ -1,6 +1,5 @@
 package ee.sda.ticketingsystem.service;
 
-import ee.sda.ticketingsystem.dto.CommentDTO;
 import ee.sda.ticketingsystem.dto.TicketDTO;
 import ee.sda.ticketingsystem.entity.Ticket;
 import ee.sda.ticketingsystem.entity.User;

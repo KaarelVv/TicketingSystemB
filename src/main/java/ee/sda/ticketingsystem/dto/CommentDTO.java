@@ -1,6 +1,5 @@
 package ee.sda.ticketingsystem.dto;
 
-import ee.sda.ticketingsystem.entity.Ticket;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
