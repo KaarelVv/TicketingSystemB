@@ -3,10 +3,14 @@ package ee.sda.ticketingsystem.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ee.sda.ticketingsystem.dto.UserDTO;
 import ee.sda.ticketingsystem.entity.User;
+import ee.sda.ticketingsystem.hydrator.UserHydrator;
 import ee.sda.ticketingsystem.service.UserDetailServiceImp;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -29,18 +33,22 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
-
+@NoArgsConstructor
 public class SecurityConfig {
+    @Autowired
+    public SecurityConfig(UserDetailServiceImp userDetailServiceImp, ObjectMapper mapper, UserHydrator userHydrator) {
+        this.userDetailServiceImp = userDetailServiceImp;
+        this.mapper = mapper;
+        this.userHydrator = userHydrator;
+    }
 
     private static final String REGISTER_ENDPOINT = "/api/v1/user/register";
     private static final String LOGIN_ENDPOINT = "/api/v1/user/login";
     private static final int COOKIE_VALIDATION_MINUTES = 60;
 
     private UserDetailServiceImp userDetailServiceImp;
-
     private ObjectMapper mapper;
-
+    private UserHydrator userHydrator;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -56,9 +64,9 @@ public class SecurityConfig {
     }
 
     @Bean
-        public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Allow this origin ie angular
+        configuration.setAllowedOrigins(List.of("localhost:4200")); // Allow this origin ie angular
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
 
@@ -96,26 +104,16 @@ public class SecurityConfig {
                     response.setContentType("application/json;charset=UTF-8");
                     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                     User userEntity = userDetailServiceImp.findByUsername(userDetails.getUsername());
-                    String json = mapper.writeValueAsString(userEntityToUserDto(userEntity));
+                    String json = mapper.writeValueAsString(userHydrator.convertToDTO(userEntity));
                     response.getWriter().write(json);
                 });
     }
 
     private Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authRequests() {
         return authorizeRequests -> authorizeRequests
-                .requestMatchers(REGISTER_ENDPOINT,LOGIN_ENDPOINT).permitAll()
+                .requestMatchers(REGISTER_ENDPOINT, LOGIN_ENDPOINT).permitAll()
                 .requestMatchers("/api/v1/ticket/agent").hasRole("AGENT")
-                .requestMatchers("/api/v1/ticket/user").hasRole("USER")
+                .requestMatchers(HttpMethod.POST, "/api/v1/ticket/user").hasRole("CUSTOMER")
                 .anyRequest().authenticated();
-    }
-
-    private UserDTO userEntityToUserDto(User userEntity) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(userEntity.getId());
-        userDTO.setEmail(userEntity.getEmail());
-        userDTO.setUserType(userEntity.getUserType());
-        userDTO.setName(userEntity.getName());
-
-        return  userDTO;
     }
 }
