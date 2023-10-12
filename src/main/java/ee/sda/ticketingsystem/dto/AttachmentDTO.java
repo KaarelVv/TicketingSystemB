@@ -14,5 +14,5 @@ public class AttachmentDTO {
     private String fileName;
     private Integer fileSize;
     private Date uploadDate;
-    private Ticket ticket;
+    private Integer ticketId;
 }

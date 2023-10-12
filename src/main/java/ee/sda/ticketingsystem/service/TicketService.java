@@ -1,5 +1,6 @@
 package ee.sda.ticketingsystem.service;
 
+import ee.sda.ticketingsystem.dto.CommentDTO;
 import ee.sda.ticketingsystem.dto.TicketDTO;
 import ee.sda.ticketingsystem.entity.Ticket;
 import ee.sda.ticketingsystem.entity.User;
@@ -35,12 +36,14 @@ public class TicketService {
     private TicketHydrator ticketHydrator;
     private UserRepository userRepository;
 
+    private CommentService commentService;
+
 
     @Value("${ticket.defaultStatus}")
-    private String defaultStatus;
+    private String DEFAULT_STATUS;
 
     @Value("${ticket.defaultPriority}")
-    private String defaultPriority;
+    private String DEFAULT_PRIORITY;
 
     @Transactional
     public TicketDTO createTicket(TicketDTO ticketDTO) {
@@ -49,11 +52,11 @@ public class TicketService {
                 .orElseThrow(() -> new UserNotFoundException("User with id:" + ticketDTO.getUserId() + " not found"));
 
         Ticket ticket = ticketHydrator.convertToEntity(ticketDTO)
-                .setStatus(Status.valueOf(defaultStatus))
-                .setPriority(Priority.valueOf(defaultPriority))
+                .setStatus(Status.valueOf(DEFAULT_STATUS))
+                .setPriority(Priority.valueOf(DEFAULT_PRIORITY))
                 .setCreationDate(new Date())
                 .setUser(user);
-        System.out.println("Ticket created!");
+        System.out.println("Ticket created!");   // Maybe change later to logger
 
         Ticket savedTicket = ticketRepository.save(ticket);
 

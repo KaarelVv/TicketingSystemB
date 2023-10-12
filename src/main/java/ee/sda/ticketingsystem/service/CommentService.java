@@ -2,28 +2,39 @@ package ee.sda.ticketingsystem.service;
 
 import ee.sda.ticketingsystem.dto.CommentDTO;
 import ee.sda.ticketingsystem.entity.Comment;
+import ee.sda.ticketingsystem.entity.Ticket;
+import ee.sda.ticketingsystem.exception.TicketNotFoundException;
 import ee.sda.ticketingsystem.hydrator.CommentHydrator;
 import ee.sda.ticketingsystem.repository.CommentRepository;
+import ee.sda.ticketingsystem.repository.TicketRepository;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Service
+@AllArgsConstructor
 public class CommentService {
 
     private CommentRepository commentRepository;
     private CommentHydrator commentHydrator;
+    private TicketRepository ticketRepository;
 
-
+    @Transactional
     public CommentDTO createComment(CommentDTO commentDTO){
 
-        Comment comment = commentHydrator.commentToEntity(commentDTO)
+        Ticket ticket = ticketRepository.findById(commentDTO.getTicketId())
+                .orElseThrow(() -> new TicketNotFoundException(""));
 
-
+        Comment comment = commentHydrator.convertToEntity(commentDTO)
                 .setId(commentDTO.getId())
+                .setContent(commentDTO.getContent())
                 .setCommentDate(new Date())
-                .setContent(commentDTO.getContent());
+                .setTicket(ticket);
 
-        return commentHydrator.commentToDTO(comment) ;
+        Comment savedComment = commentRepository.save(comment);
+
+        return commentHydrator.convertToDTO(savedComment);
     }
 }

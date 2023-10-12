@@ -35,10 +35,10 @@ public class Ticket {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "ticket")
-    private List<Attachment> attachment;
-
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
     private List<Comment> comment;
+
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
+    private List<Attachment> attachment;
 
 }

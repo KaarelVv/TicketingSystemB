@@ -19,11 +19,13 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String content;
     private Date commentDate;
+
     @ManyToOne
+    @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
 }

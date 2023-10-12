@@ -9,8 +9,8 @@ import java.util.Date;
 @Accessors(chain = true)
 public class CommentDTO {
 
-    private Long id;
-    private Ticket ticket;
+    private Integer id;
     private String content;
     private Date commentDate;
+    private Integer ticketId;
 }

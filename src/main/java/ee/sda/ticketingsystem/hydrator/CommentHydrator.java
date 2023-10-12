@@ -7,14 +7,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommentHydrator {
 
-    public CommentDTO commentToDTO(Comment comment){
+    public CommentDTO convertToDTO(Comment comment){
         return new CommentDTO()
                 .setId(comment.getId())
                 .setCommentDate(comment.getCommentDate())
-                .setContent(comment.getContent());
+                .setContent(comment.getContent())
+                .setTicketId(comment.getTicket().getId());
     }
 
-    public Comment commentToEntity(CommentDTO dto){
+    public Comment convertToEntity(CommentDTO dto){
         return new Comment()
                 .setId(dto.getId())
                 .setCommentDate(dto.getCommentDate())

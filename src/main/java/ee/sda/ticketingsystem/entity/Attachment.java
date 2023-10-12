@@ -26,5 +26,6 @@ public class Attachment {
     private Date uploadDate;
 
     @ManyToOne
+    @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 }
