@@ -43,9 +43,8 @@ public class SecurityConfig {
     }
 
     private static final String REGISTER_ENDPOINT = "/api/v1/user/register";
-    private static final String LOGIN_ENDPOINT = "/api/v1/user/login";
+    private static final String LOGIN_ENDPOINT = "/api/v1/login";
     private static final int COOKIE_VALIDATION_MINUTES = 60;
-
     private UserDetailServiceImp userDetailServiceImp;
     private ObjectMapper mapper;
     private UserHydrator userHydrator;
@@ -66,7 +65,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("localhost:4200")); // Allow this origin ie angular
+        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Allow this origin ie angular
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
 
@@ -113,6 +112,9 @@ public class SecurityConfig {
         return authorizeRequests -> authorizeRequests
                 .requestMatchers(REGISTER_ENDPOINT, LOGIN_ENDPOINT).permitAll()
                 .requestMatchers("/api/v1/ticket/agent").hasRole("AGENT")
+                .requestMatchers(HttpMethod.GET,"/api/v1/ticket/agent").hasRole("AGENT")
+                .requestMatchers(HttpMethod.POST, "/api/v1/ticket/user").hasRole("CUSTOMER")
+                .requestMatchers(HttpMethod.POST, "/api/v1/ticket/user").hasRole("CUSTOMER")
                 .requestMatchers(HttpMethod.POST, "/api/v1/ticket/user").hasRole("CUSTOMER")
                 .anyRequest().authenticated();
     }
