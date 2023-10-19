@@ -38,7 +38,6 @@ public class Ticket {
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
     private List<Comment> comment;
 
-    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
-    private List<Attachment> attachment;
+
 
 }

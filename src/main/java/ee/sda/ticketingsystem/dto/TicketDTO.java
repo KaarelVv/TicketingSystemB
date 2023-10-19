@@ -22,6 +22,6 @@ public class TicketDTO {
     private Priority priority;
     private Status status;
     private Integer userId;
-    private List<AttachmentDTO> attachments = new ArrayList<>();
     private List<CommentDTO> comments = new ArrayList<>();
+
 }

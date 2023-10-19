@@ -23,7 +23,6 @@ public class UserController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-
     @GetMapping
     public ResponseEntity<List<UserDTO>> listAllUsers() {
         List<UserDTO> users = userService.getAllUsers();
@@ -37,6 +36,11 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(userDTO);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<UserDTO> editUser(@PathVariable Integer id) {
+        return ResponseEntity.ok(new UserDTO());
     }
 
 

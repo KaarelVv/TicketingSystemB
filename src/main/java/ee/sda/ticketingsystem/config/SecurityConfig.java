@@ -35,12 +35,6 @@ import java.util.List;
 @EnableWebSecurity
 @NoArgsConstructor
 public class SecurityConfig {
-    @Autowired
-    public SecurityConfig(UserDetailServiceImp userDetailServiceImp, ObjectMapper mapper, UserHydrator userHydrator) {
-        this.userDetailServiceImp = userDetailServiceImp;
-        this.mapper = mapper;
-        this.userHydrator = userHydrator;
-    }
 
     private static final String REGISTER_ENDPOINT = "/api/v1/user/register";
     private static final String LOGIN_ENDPOINT = "/api/v1/login";
@@ -48,6 +42,13 @@ public class SecurityConfig {
     private UserDetailServiceImp userDetailServiceImp;
     private ObjectMapper mapper;
     private UserHydrator userHydrator;
+
+    @Autowired
+    public SecurityConfig(UserDetailServiceImp userDetailServiceImp, ObjectMapper mapper, UserHydrator userHydrator) {
+        this.userDetailServiceImp = userDetailServiceImp;
+        this.mapper = mapper;
+        this.userHydrator = userHydrator;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -65,7 +66,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Allow this origin ie angular
+        configuration.setAllowedOrigins(List.of("**")); // Allow this origin ie angular
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
 
@@ -106,16 +107,19 @@ public class SecurityConfig {
                     String json = mapper.writeValueAsString(userHydrator.convertToDTO(userEntity));
                     response.getWriter().write(json);
                 });
+
     }
 
     private Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authRequests() {
         return authorizeRequests -> authorizeRequests
                 .requestMatchers(REGISTER_ENDPOINT, LOGIN_ENDPOINT).permitAll()
-                .requestMatchers("/api/v1/ticket/agent").hasRole("AGENT")
+                .requestMatchers(HttpMethod.PUT,"/api/v1/ticket/agent").hasRole("AGENT")
+                .requestMatchers(HttpMethod.POST,"/api/v1/ticket/agent").hasRole("AGENT")
                 .requestMatchers(HttpMethod.GET,"/api/v1/ticket/agent").hasRole("AGENT")
+                .requestMatchers(HttpMethod.DELETE ,"/api/v1/ticket/agent").hasRole("AGENT")
                 .requestMatchers(HttpMethod.POST, "/api/v1/ticket/user").hasRole("CUSTOMER")
-                .requestMatchers(HttpMethod.POST, "/api/v1/ticket/user").hasRole("CUSTOMER")
-                .requestMatchers(HttpMethod.POST, "/api/v1/ticket/user").hasRole("CUSTOMER")
+                .requestMatchers(HttpMethod.GET, "/api/v1/ticket/user").hasRole("CUSTOMER")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/ticket/user").hasRole("CUSTOMER")
                 .anyRequest().authenticated();
     }
 }

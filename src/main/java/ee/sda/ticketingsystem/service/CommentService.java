@@ -28,7 +28,6 @@ public class CommentService {
                 .orElseThrow(() -> new TicketNotFoundException(""));
 
         Comment comment = commentHydrator.convertToEntity(commentDTO)
-                .setId(commentDTO.getId())
                 .setContent(commentDTO.getContent())
                 .setCommentDate(new Date())
                 .setTicket(ticket);
@@ -36,5 +35,13 @@ public class CommentService {
         Comment savedComment = commentRepository.save(comment);
 
         return commentHydrator.convertToDTO(savedComment);
+    }
+    public CommentDTO editComment(CommentDTO commentDTO){
+
+        Comment comment = commentRepository.findById(commentDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Comment not found"))
+                .setContent(commentDTO.getContent());
+
+        return commentHydrator.convertToDTO(comment);
     }
 }
