@@ -5,6 +5,7 @@ import ee.sda.ticketingsystem.dto.UserDTO;
 import ee.sda.ticketingsystem.entity.User;
 import ee.sda.ticketingsystem.hydrator.UserHydrator;
 import ee.sda.ticketingsystem.service.UserDetailServiceImp;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
-import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
-import org.springframework.security.config.annotation.web.configurers.RememberMeConfigurer;
+import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -63,33 +61,51 @@ public class SecurityConfig {
         return authProvider;
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("**")); // Allow this origin ie angular
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-
-        // Optional: Enable credentials, if you need to send cookies or authentication headers
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(List.of("**")); // Allow this origin ie angular
+//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+//        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+//
+//        // Optional: Enable credentials, if you need to send cookies or authentication headers
+//        configuration.setAllowCredentials(true);
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authRequests())
-                .cors()
-                .and()
+                .cors(getCorsConfigurerCustomizer())
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(successLogin())
                 .rememberMe(rememberMe())
+                .exceptionHandling(exceptionHandlingConfigurer())
                 .build();
     }
+    private static Customizer<CorsConfigurer<HttpSecurity>> getCorsConfigurerCustomizer() {
+        return cors -> cors.configurationSource(request -> {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+            configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+            configuration.setAllowCredentials(true);
 
+//            configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Date", "Total-Count", "loginInfo"));
+//            configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Date", "Total-Count", "loginInfo", "Authorization", "X-Requested-With"));
+
+            configuration.setAllowedHeaders(Arrays.asList(
+                    "Content-Type", "Date", "Total-Count", "loginInfo",
+                    "Authorization", "X-Requested-With", "withCredentials",
+                    "Access-Control-Allow-Headers", "Access-Control-Allow-Origin",
+                    "Access-Control-Allow-Methods", "X-User-Token", "X-Device-Token",
+                    "Cache-Control", "Cookie"
+            ));
+            return configuration;
+        });
+    }
     private Customizer<RememberMeConfigurer<HttpSecurity>> rememberMe() {
         return rememberMe -> rememberMe
                 .tokenValiditySeconds(COOKIE_VALIDATION_MINUTES * 60 * 60)
@@ -106,7 +122,15 @@ public class SecurityConfig {
                     User userEntity = userDetailServiceImp.findByUsername(userDetails.getUsername());
                     String json = mapper.writeValueAsString(userHydrator.convertToDTO(userEntity));
                     response.getWriter().write(json);
-                });
+                })
+                    .failureHandler((request, response, exception) -> {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Set 401 status code
+                response.setContentType("application/json;charset=UTF-8");
+                // Customize the response body for authentication failure
+                String errorMessage = "Authentication failed. Please check your credentials.";
+                String json = "{\"error\": \"" + errorMessage + "\"}";
+                response.getWriter().write(json);
+            });
 
     }
 
@@ -121,5 +145,13 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/v1/ticket/user").hasRole("CUSTOMER")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/ticket/user").hasRole("CUSTOMER")
                 .anyRequest().authenticated();
+    }
+
+    private static Customizer<ExceptionHandlingConfigurer<HttpSecurity>> exceptionHandlingConfigurer() {
+        return exception -> {
+            exception.authenticationEntryPoint((request, response, authException) -> {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
+            });
+        };
     }
 }

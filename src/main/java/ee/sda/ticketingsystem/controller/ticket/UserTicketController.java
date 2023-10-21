@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/ticket/user")
 @AllArgsConstructor
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserTicketController {
 
     private final TicketService ticketService;
-    private final CommentService commentService;
     @PostMapping
     public TicketDTO createTicket(@RequestBody TicketDTO ticketDTO) {
         return ticketService.createTicket(ticketDTO);
@@ -25,6 +26,14 @@ public class UserTicketController {
         TicketDTO ticketDTO = ticketService.getTicketById(id);
         return ResponseEntity.ok().body(ticketDTO);
     }
+
+    @GetMapping("/all/{id}")
+    public ResponseEntity<List<TicketDTO>> getAllByUser(@PathVariable Integer id) {
+        List<TicketDTO> ticketDTO = ticketService.getAllTicketsByUserId(id);
+        return ResponseEntity.ok().body(ticketDTO);
+    }
+
+
 
 
 

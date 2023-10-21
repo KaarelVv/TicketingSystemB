@@ -24,25 +24,22 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class TicketService {
 
-    @Autowired
-    public TicketService(TicketRepository ticketRepository, TicketHydrator ticketHydrator, UserRepository userRepository) {
-        this.ticketRepository = ticketRepository;
-        this.ticketHydrator = ticketHydrator;
-        this.userRepository = userRepository;
-    }
-
     private TicketRepository ticketRepository;
     private TicketHydrator ticketHydrator;
     private UserRepository userRepository;
-
-    private CommentService commentService;
-
 
     @Value("${ticket.defaultStatus}")
     private String DEFAULT_STATUS;
 
     @Value("${ticket.defaultPriority}")
     private String DEFAULT_PRIORITY;
+
+    @Autowired
+    public TicketService(TicketRepository ticketRepository, TicketHydrator ticketHydrator, UserRepository userRepository) {
+        this.ticketRepository = ticketRepository;
+        this.ticketHydrator = ticketHydrator;
+        this.userRepository = userRepository;
+    }
 
     @Transactional
     public TicketDTO createTicket(TicketDTO ticketDTO) {
@@ -62,13 +59,17 @@ public class TicketService {
         return ticketHydrator.convertToDTO(savedTicket);
     }
 
-    public List<TicketDTO> getAllTicket() {
+    public List<TicketDTO> getAllTickets() {
         List<Ticket> tickets = ticketRepository.findAll();
         return tickets.stream().map(ticket -> ticketHydrator.convertToDTO(ticket))
                 .collect(Collectors.toList());
     }
+    public List<TicketDTO> getAllTicketsByUserId(Integer integer) {
+        List<Ticket> tickets = ticketRepository.findByUserId(integer);
+        return tickets.stream().map(ticket -> ticketHydrator.convertToDTO(ticket))
+                .collect(Collectors.toList());
+    }
 
-    // Kuigi pakkus algselt teha Optional<Ticket> .orElseThrow() asemel
     public TicketDTO getTicketById(Integer id) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new TicketNotFoundException("Ticket with id:" + id + " not found"));

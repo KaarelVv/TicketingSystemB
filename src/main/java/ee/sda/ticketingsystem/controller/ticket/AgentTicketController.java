@@ -19,7 +19,7 @@ public class AgentTicketController {
 
     @GetMapping
     public List<TicketDTO> getTickets() {
-        return ticketService.getAllTicket();
+        return ticketService.getAllTickets();
     }
 
     @PutMapping("/{id}")
