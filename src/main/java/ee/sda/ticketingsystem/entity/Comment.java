@@ -23,9 +23,18 @@ public class Comment {
 
     private String content;
     private Date commentDate;
+    private Date lastUpdated;
 
     @ManyToOne
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
+
+    public Comment copy() {
+        return new Comment()
+                .setId(this.id)
+                .setContent(this.content)
+                .setCommentDate(this.commentDate)
+                .setLastUpdated(this.lastUpdated);
+    }
 
 }

@@ -21,7 +21,6 @@ public class AgentTicketController {
     public List<TicketDTO> getTickets() {
         return ticketService.getAllTickets();
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<TicketDTO> editTicket(@PathVariable Integer id, @RequestBody TicketDTO updatedTicket) {
         try {

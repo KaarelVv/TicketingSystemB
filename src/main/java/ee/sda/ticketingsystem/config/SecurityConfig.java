@@ -137,13 +137,9 @@ public class SecurityConfig {
     private Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authRequests() {
         return authorizeRequests -> authorizeRequests
                 .requestMatchers(REGISTER_ENDPOINT, LOGIN_ENDPOINT).permitAll()
-                .requestMatchers(HttpMethod.PUT,"/api/v1/ticket/agent").hasRole("AGENT")
-                .requestMatchers(HttpMethod.POST,"/api/v1/ticket/agent").hasRole("AGENT")
-                .requestMatchers(HttpMethod.GET,"/api/v1/ticket/agent").hasRole("AGENT")
-                .requestMatchers(HttpMethod.DELETE ,"/api/v1/ticket/agent").hasRole("AGENT")
-                .requestMatchers(HttpMethod.POST, "/api/v1/ticket/user").hasRole("CUSTOMER")
-                .requestMatchers(HttpMethod.GET, "/api/v1/ticket/user").hasRole("CUSTOMER")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/ticket/user").hasRole("CUSTOMER")
+                .requestMatchers("/api/v1/ticket/agent/**").hasRole("AGENT")
+                .requestMatchers( "/api/v1/ticket/user/**").hasRole("CUSTOMER")
+                .requestMatchers( "/api/v1/comments/**").hasAnyRole("AGENT","CUSTOMER")
                 .anyRequest().authenticated();
     }
 

@@ -38,13 +38,12 @@ public class UserService {
 
         return userHydrator.convertToDTO(savedUser);
     }
+
     public UserDTO getUserById(Integer id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id:" + id + " not found"));
-            return userHydrator.convertToDTO(user);
-        }
-
-
+        return userHydrator.convertToDTO(user);
+    }
 
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -52,7 +51,6 @@ public class UserService {
                 .map(userHydrator::convertToDTO)
                 .collect(Collectors.toList());
     }
-
 
 
 }

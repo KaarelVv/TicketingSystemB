@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class Ticket {
     @Column(length = 2000)
     private String description;
     private Date creationDate;
+    private Date lastUpdated;
     private Priority priority;
     private Status status;
 
@@ -36,7 +38,30 @@ public class Ticket {
     private User user;
 
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
-    private List<Comment> comment;
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "ticket")
+    private List<HistoryLog> historyLog;
+
+    public Ticket copy() {
+        Ticket copiedTicket = new Ticket();
+        copiedTicket.setId(this.id);
+        copiedTicket.setTitle(this.title);
+        copiedTicket.setDescription(this.description);
+        copiedTicket.setCreationDate(this.creationDate);
+        copiedTicket.setPriority(this.priority);
+        copiedTicket.setStatus(this.status);
+        copiedTicket.setUser(this.user);
+
+        if (this.comments != null) {
+            copiedTicket.comments = new ArrayList<>();
+            for (Comment comment : this.comments) {
+                copiedTicket.comments.add(comment.copy());
+            }
+        }
+
+        return copiedTicket;
+    }
 
 
 

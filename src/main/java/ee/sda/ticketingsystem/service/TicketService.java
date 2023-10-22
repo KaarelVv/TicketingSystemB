@@ -8,6 +8,7 @@ import ee.sda.ticketingsystem.enums.ticket.Status;
 import ee.sda.ticketingsystem.exception.TicketNotFoundException;
 import ee.sda.ticketingsystem.exception.UserNotFoundException;
 import ee.sda.ticketingsystem.hydrator.TicketHydrator;
+import ee.sda.ticketingsystem.repository.HistoryLogRepository;
 import ee.sda.ticketingsystem.repository.TicketRepository;
 import ee.sda.ticketingsystem.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -25,8 +26,13 @@ import java.util.stream.Collectors;
 public class TicketService {
 
     private TicketRepository ticketRepository;
-    private TicketHydrator ticketHydrator;
+    private HistoryLogRepository historyLogRepository;
+
+    private HistoryLogService historyLogService;
     private UserRepository userRepository;
+    private TicketHydrator ticketHydrator;
+
+
 
     @Value("${ticket.defaultStatus}")
     private String DEFAULT_STATUS;
@@ -35,10 +41,11 @@ public class TicketService {
     private String DEFAULT_PRIORITY;
 
     @Autowired
-    public TicketService(TicketRepository ticketRepository, TicketHydrator ticketHydrator, UserRepository userRepository) {
+    public TicketService(TicketRepository ticketRepository, TicketHydrator ticketHydrator, UserRepository userRepository, HistoryLogRepository historyLogRepository) {
         this.ticketRepository = ticketRepository;
         this.ticketHydrator = ticketHydrator;
         this.userRepository = userRepository;
+        this.historyLogRepository = historyLogRepository;
     }
 
     @Transactional
@@ -79,14 +86,21 @@ public class TicketService {
 
     @Transactional
     public TicketDTO editTicket(TicketDTO ticketDTO) {
-        Ticket ticket = ticketRepository.findById(ticketDTO.getId())
-                .orElseThrow(() -> new TicketNotFoundException("Ticket with id:" + ticketDTO.getId() + " not found"))
-                .setTitle(ticketDTO.getTitle())
+
+
+        Ticket oldTicket = ticketRepository.findById(ticketDTO.getId())
+                .orElseThrow(() -> new TicketNotFoundException("Ticket with id:" + ticketDTO.getId() + " not found"));
+
+        Ticket copyTicket = oldTicket.copy();
+
+                oldTicket.setTitle(ticketDTO.getTitle())
                 .setDescription(ticketDTO.getDescription())
                 .setStatus(ticketDTO.getStatus())
                 .setPriority(ticketDTO.getPriority());
 
-        return ticketHydrator.convertToDTO(ticket);
+                historyLogService.createLog(copyTicket,oldTicket,ticketDTO.getUserId());
+
+        return ticketHydrator.convertToDTO(oldTicket);
     }
 
 

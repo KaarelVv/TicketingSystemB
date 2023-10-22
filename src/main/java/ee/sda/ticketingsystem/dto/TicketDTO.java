@@ -23,5 +23,6 @@ public class TicketDTO {
     private Status status;
     private Integer userId;
     private List<CommentDTO> comments = new ArrayList<>();
+    private List<HistoryLogDTO> historyLog = new ArrayList<>();
 
 }
