@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/ticket/agent")
 @AllArgsConstructor
-//@PreAuthorize("hasRole('AGENT')")
+
 public class AgentTicketController {
 
     private final TicketService ticketService;

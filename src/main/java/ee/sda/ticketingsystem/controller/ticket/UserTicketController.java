@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/ticket/user")
+@RequestMapping("api/v1/ticket/customer")
 @AllArgsConstructor
-//@PreAuthorize("hasRole('USER')")
+//@PreAuthorize("hasRole('CUSTOMER')")
 public class UserTicketController {
 
     private final TicketService ticketService;

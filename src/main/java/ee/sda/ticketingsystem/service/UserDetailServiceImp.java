@@ -29,6 +29,7 @@ public class UserDetailServiceImp implements UserDetailsService {
     public User findByUsername(String username) {
         User user = userRepository.findByEmail(username);
         System.out.println("Retrieved user: " + user.getEmail());
+        System.out.println("Retrieved user type: " + user.getUserType());
         return user;
     }
 
@@ -45,12 +46,12 @@ public class UserDetailServiceImp implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         if (user.getUserType()== UserType.AGENT) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_AGENT"));
+            authorities.add(new SimpleGrantedAuthority("AGENT"));
         }else {
-            authorities.add(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
+            authorities.add(new SimpleGrantedAuthority("CUSTOMER"));
         }
 
-        logger.info("Loaded user: {} with role: {}", user.getEmail(), user.getUserType());
+        logger.info("Loaded user: {} with type: {}", user.getEmail(), user.getUserType());
 
 
         return new CustomUserDetails(user, authorities);
