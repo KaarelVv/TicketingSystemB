@@ -14,6 +14,7 @@ import java.util.Date;
 @Accessors(chain = true)
 public class UserDTO {
 
+
     private Integer id;
 
     @NotEmpty(message = "Name is required.")

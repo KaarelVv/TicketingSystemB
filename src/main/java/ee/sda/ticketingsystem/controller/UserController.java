@@ -1,6 +1,7 @@
 package ee.sda.ticketingsystem.controller;
 
 import ee.sda.ticketingsystem.dto.UserDTO;
+import ee.sda.ticketingsystem.dto.response.UserResponseDTO;
 import ee.sda.ticketingsystem.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO userDTO) {
-        UserDTO createdUser = userService.createUser(userDTO);
+    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserDTO userDTO) {
+        UserResponseDTO createdUser = userService.createUser(userDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 

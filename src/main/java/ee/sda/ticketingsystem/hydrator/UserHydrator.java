@@ -1,6 +1,7 @@
 package ee.sda.ticketingsystem.hydrator;
 
 import ee.sda.ticketingsystem.dto.UserDTO;
+import ee.sda.ticketingsystem.dto.response.UserResponseDTO;
 import ee.sda.ticketingsystem.entity.User;
 import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,14 @@ public class UserHydrator {
                 .setRegisteredAt(user.getRegisteredAt());
     }
 
+    public UserResponseDTO convertToResponseDTO(User user) {
+        return new UserResponseDTO()
+                .setId(user.getId())
+                .setName(user.getName())
+                .setEmail(user.getEmail())
+                .setUserType(user.getUserType());
+    }
+
     public User convertToEntity(UserDTO dto) {
         return new User()
                 .setId(dto.getId())
@@ -28,6 +37,8 @@ public class UserHydrator {
                 .setUserType(dto.getUserType())
                 .setRegisteredAt(dto.getRegisteredAt());
     }
+
+
 }
 
 

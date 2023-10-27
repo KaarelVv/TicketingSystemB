@@ -1,6 +1,7 @@
 package ee.sda.ticketingsystem.service;
 
 import ee.sda.ticketingsystem.dto.UserDTO;
+import ee.sda.ticketingsystem.dto.response.UserResponseDTO;
 import ee.sda.ticketingsystem.entity.User;
 import ee.sda.ticketingsystem.enums.user.UserType;
 import ee.sda.ticketingsystem.exception.UserNotFoundException;
@@ -24,7 +25,7 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserDTO createUser(UserDTO userDto) {
+    public UserResponseDTO createUser(UserDTO userDto) {
 
         User user = userHydrator.convertToEntity(userDto)
                 .setId(userDto.getId())
@@ -36,7 +37,7 @@ public class UserService {
         System.out.println("User created!");
         User savedUser = userRepository.save(user);
 
-        return userHydrator.convertToDTO(savedUser);
+        return userHydrator.convertToResponseDTO(savedUser);
     }
 
     public UserDTO getUserById(Integer id) {
