@@ -16,7 +16,6 @@ import java.util.List;
 @Setter
 @Accessors(chain = true)
 @Table(name = "account")
-
 public class User {
 
     @Id

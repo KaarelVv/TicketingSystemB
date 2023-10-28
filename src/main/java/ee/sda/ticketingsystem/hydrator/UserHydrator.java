@@ -1,6 +1,7 @@
 package ee.sda.ticketingsystem.hydrator;
 
 import ee.sda.ticketingsystem.dto.UserDTO;
+import ee.sda.ticketingsystem.dto.request.UserRequestDTO;
 import ee.sda.ticketingsystem.dto.response.UserResponseDTO;
 import ee.sda.ticketingsystem.entity.User;
 import lombok.experimental.Accessors;
@@ -26,6 +27,12 @@ public class UserHydrator {
                 .setName(user.getName())
                 .setEmail(user.getEmail())
                 .setUserType(user.getUserType());
+    }
+    public UserRequestDTO convertToRequestDTO(User user) {
+        return new UserRequestDTO()
+                .setId(user.getId())
+                .setEmail(user.getEmail())
+                ;
     }
 
     public User convertToEntity(UserDTO dto) {

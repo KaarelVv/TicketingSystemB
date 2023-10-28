@@ -37,7 +37,7 @@ public class SecurityConfig {
 
     private static final String REGISTER_ENDPOINT = "/api/v1/user/register";
     private static final String LOGIN_ENDPOINT = "/api/v1/login";
-    private static final int COOKIE_VALIDATION_MINUTES = 60;
+    private static final int COOKIE_VALIDATION_SECONDS = 600;
     private UserDetailServiceImp userDetailServiceImp;
     private ObjectMapper mapper;
     private UserHydrator userHydrator;
@@ -62,7 +62,6 @@ public class SecurityConfig {
         return authProvider;
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -75,6 +74,7 @@ public class SecurityConfig {
                 .exceptionHandling(exceptionHandlingConfigurer())
                 .build();
     }
+
     private static Customizer<CorsConfigurer<HttpSecurity>> getCorsConfigurerCustomizer() {
         return cors -> cors.configurationSource(request -> {
             CorsConfiguration configuration = new CorsConfiguration();
@@ -97,10 +97,9 @@ public class SecurityConfig {
     }
     private Customizer<RememberMeConfigurer<HttpSecurity>> rememberMe() {
         return rememberMe -> rememberMe
-                .tokenValiditySeconds(COOKIE_VALIDATION_MINUTES * 60 * 60)
+                .tokenValiditySeconds(COOKIE_VALIDATION_SECONDS)
                 .useSecureCookie(true);
     }
-
     private Customizer<FormLoginConfigurer<HttpSecurity>> successLogin() {
         return formLogin -> formLogin
                 .loginProcessingUrl(LOGIN_ENDPOINT)
@@ -109,7 +108,7 @@ public class SecurityConfig {
                     response.setContentType("application/json;charset=UTF-8");
                     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                     User userEntity = userDetailServiceImp.findByUsername(userDetails.getUsername());
-                    String json = mapper.writeValueAsString(userHydrator.convertToDTO(userEntity));
+                    String json = mapper.writeValueAsString(userHydrator.convertToResponseDTO(userEntity));
                     response.getWriter().write(json);
                 })
                     .failureHandler((request, response, exception) -> {
