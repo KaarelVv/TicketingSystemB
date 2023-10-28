@@ -44,14 +44,14 @@ public class Ticket {
     private List<HistoryLog> historyLog;
 
     public Ticket copy() {
-        Ticket copiedTicket = new Ticket();
-        copiedTicket.setId(this.id);
-        copiedTicket.setTitle(this.title);
-        copiedTicket.setDescription(this.description);
-        copiedTicket.setCreationDate(this.creationDate);
-        copiedTicket.setPriority(this.priority);
-        copiedTicket.setStatus(this.status);
-        copiedTicket.setUser(this.user);
+        Ticket copiedTicket = new Ticket()
+        .setId(this.id)
+        .setTitle(this.title)
+        .setDescription(this.description)
+        .setCreationDate(this.creationDate)
+        .setPriority(this.priority)
+        .setStatus(this.status)
+        .setUser(this.user);
 
         if (this.comments != null) {
             copiedTicket.comments = new ArrayList<>();
@@ -59,7 +59,6 @@ public class Ticket {
                 copiedTicket.comments.add(comment.copy());
             }
         }
-
         return copiedTicket;
     }
 

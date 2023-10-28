@@ -66,7 +66,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-
                 .addFilterBefore(new CustomCookiFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authRequests())
                 .cors(getCorsConfigurerCustomizer())
@@ -74,7 +73,6 @@ public class SecurityConfig {
                 .formLogin(successLogin())
                 .rememberMe(rememberMe())
                 .exceptionHandling(exceptionHandlingConfigurer())
-
                 .build();
     }
     private static Customizer<CorsConfigurer<HttpSecurity>> getCorsConfigurerCustomizer() {
@@ -130,7 +128,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
                 .requestMatchers(REGISTER_ENDPOINT, LOGIN_ENDPOINT).permitAll()
                 .requestMatchers("/api/v1/ticket/agent/**").hasAuthority("AGENT")
-                .requestMatchers(HttpMethod.POST, "/api/v1/ticket/customer/**").hasAuthority("CUSTOMER")
+                .requestMatchers( "/api/v1/ticket/customer/**").hasAuthority("CUSTOMER")
                 .requestMatchers( "/api/v1/comments/**").hasAnyAuthority("AGENT","CUSTOMER")
                 .anyRequest()
                 .authenticated();

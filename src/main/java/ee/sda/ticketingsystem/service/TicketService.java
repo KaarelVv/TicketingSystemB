@@ -41,11 +41,12 @@ public class TicketService {
     private String DEFAULT_PRIORITY;
 
     @Autowired
-    public TicketService(TicketRepository ticketRepository, TicketHydrator ticketHydrator, UserRepository userRepository, HistoryLogRepository historyLogRepository) {
+    public TicketService(TicketRepository ticketRepository, TicketHydrator ticketHydrator, UserRepository userRepository, HistoryLogRepository historyLogRepository, HistoryLogService historyLogService) {
         this.ticketRepository = ticketRepository;
         this.ticketHydrator = ticketHydrator;
         this.userRepository = userRepository;
         this.historyLogRepository = historyLogRepository;
+        this.historyLogService = historyLogService;
     }
 
     @Transactional
