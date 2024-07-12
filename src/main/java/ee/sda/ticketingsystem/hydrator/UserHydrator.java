@@ -31,8 +31,7 @@ public class UserHydrator {
     public UserRequestDTO convertToRequestDTO(User user) {
         return new UserRequestDTO()
                 .setId(user.getId())
-                .setEmail(user.getEmail())
-                ;
+                .setEmail(user.getEmail());
     }
 
     public User convertToEntity(UserDTO dto) {
